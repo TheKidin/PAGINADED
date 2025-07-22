@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C.R.U.E.L. - Pruebas de Capacidad Humana</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Pantalla de Bienvenida -->
+    <div id="bienvenida" class="screen">
+        <div class="terminal cruel-terminal">
+            <div class="cruel-header">
+                <h1 class="cruel-logo">C.R.U.E.L</h1>
+                <div class="cruel-subtitle">SISTEMA DE SIMULACION INTERNA - FASE 1</div>
+                <div class="cruel-divider"></div>
+                <p class="cruel-warning-text">Estas apunto de ingresar a un entorno simulado diseñado para evaluar tu estabilidad mental, lógico adaptativa y potencial de supervivencia</p>
+                <p class="cruel-warning-text">Tus emociones no son relevantes. Solo tus Resultados</p>
+            </div>
+            <div class="cruel-init-section">
+                <p class="cruel-warning-final">ADVERTENCIA: Una vez iniciado, no hay vuelta atrás</p>
+                <button id="startButton" class="cruel-button">[ INICIAR PROTOCOLO ]</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de Mini Juegos -->
+    <div id="minijuegos" class="screen hidden">
+        <div class="terminal">
+            <h2 id="titulo-juego">></h2>
+            <div id="contenedor-juego"></div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Recompensa -->
+    <div id="recompensa" class="hidden">
+    <div class="terminal">
+        <h1 class="cruel-logo">C.R.U.E.L</h1>
+        <p id="mensaje-recompensa">ACCESO CONCEDIDO</p>
+        <button id="btn-entrar">[ PRESIONAR PARA CONTINUAR ]</button>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
