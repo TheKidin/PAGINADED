@@ -273,7 +273,9 @@ button:hover, .btn-retro:hover {
     background: #111;
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
     transition: all 0.2s;
-    cursor: move;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
 }
 
 .numero.colocado {
@@ -284,6 +286,10 @@ button:hover, .btn-retro:hover {
 .secuencia-destino.incorrecto {
     animation: shake 0.5s;
     border-color: var(--error-color);
+}
+
+.secuencia-destino{
+    min-height: 200px;
 }
 
 /* ==================== JUEGO DE MEMORIA MEJORADO ==================== */
@@ -523,6 +529,8 @@ button:hover, .btn-retro:hover {
     border: 2px solid var(--text-color);
     transition: all 0.3s;
     cursor: grab;
+    touch-action: none;
+    user-select: none;
 }
 
 .puzzle-piece:hover {
@@ -548,6 +556,7 @@ button:hover, .btn-retro:hover {
     position: relative;
     transition: all 0.3s;
     border-radius: 5px;
+    min-height: 100px;
 }
 
 .puzzle-slot.highlight {
@@ -606,6 +615,9 @@ button:hover, .btn-retro:hover {
     cursor: pointer;
     border: 1px solid #0f0;
     user-select: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
 
 .sudoku-cell.fixed {
@@ -1104,3 +1116,15 @@ button:hover, .btn-retro:hover {
     display: none !important;
 }
 
+
+/* Evitar zoom no deseado al tocar inputs */
+input, button, .numero, .puzzle-piece {
+    font-size: 16px !important;
+    touch-action: manipulation;
+}
+
+/* Mejorar feedback táctil */
+.numero:active, .puzzle-piece:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+}

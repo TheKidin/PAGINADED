@@ -394,6 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupSecuencia(secuenciaBase) {
         const destino = document.querySelector('.secuencia-destino');
+        const numeros = document.querySelectorAll('.numero');
         const btnVerificar = document.getElementById('btn-verificar-secuencia');
         const btnReiniciar = document.getElementById('btn-reiniciar-secuencia');
         const tiempoElement = document.getElementById('tiempo');
@@ -406,6 +407,73 @@ document.addEventListener('DOMContentLoaded', () => {
         let tiempoRestante = 60;
         let numerosColocados = [];
         const secuenciaCorrecta = secuenciaBase.join(',');
+
+        function manejarDropTouch(e) {
+            e.preventDefault();
+            const touch = e.changedTouches[0];
+            const elementoArrastrado = document.querySelector('[data-dragging="true"]');
+            
+            if (elementoArrastrado && destino.contains(document.elementFromPoint(touch.clientX, touch.clientY))) {
+                const valor = elementoArrastrado.dataset.valor;
+                if (!numerosColocados.includes(valor)) {
+                    const clon = elementoArrastrado.cloneNode(true);
+                    clon.draggable = false;
+                    clon.classList.add('colocado');
+                    destino.appendChild(clon);
+                    numerosColocados.push(valor);
+                    verificarSecuencia();
+                }
+            }
+            if (elementoArrastrado) elementoArrastrado.dataset.dragging = 'false';
+        }
+
+        // Configurar eventos táctiles
+        numeros.forEach(numero => {
+            // Ratón (desktop)
+            numero.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', e.target.dataset.valor);
+            });
+
+            // Touch (móvil)
+            numero.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                numero.dataset.dragging = 'true';
+                numero.style.position = 'absolute';
+                numero.style.left = `${touch.clientX - 50}px`;
+                numero.style.top = `${touch.clientY - 50}px`;
+                e.preventDefault();
+            });
+
+            numero.addEventListener('touchmove', (e) => {
+                if (numero.dataset.dragging === 'true') {
+                    const touch = e.touches[0];
+                    const rect = numero.getBoundingClientRect();
+                    numero.style.left = `${touch.clientX - rect.width / 2}px`;
+                    numero.style.top = `${touch.clientY - rect.height / 2}px`;
+                    e.preventDefault();
+                }
+            });
+
+            numero.addEventListener('touchend', manejarDropTouch);
+        });
+
+        // Configurar destino
+        destino.addEventListener('dragover', (e) => e.preventDefault());
+        destino.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const valor = e.dataTransfer.getData('text/plain');
+            if (!numerosColocados.includes(valor)) {
+                const numero = document.querySelector(`.numero[data-valor="${valor}"]`);
+                if (!numero) return;
+                
+                const clon = numero.cloneNode(true);
+                clon.draggable = false;
+                clon.classList.add('colocado');
+                destino.appendChild(clon);
+                numerosColocados.push(valor);
+                verificarSecuencia();
+            }
+        });
         
         function iniciarTemporizador() {
             tiempoElement.style.color = '#0f0';
@@ -633,6 +701,50 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const totalPiezas = pieces.length;
     let colocadas = 0;
+
+    // Eventos táctiles para móviles
+        pieces.forEach(piece => {
+            // Ratón (desktop)
+            piece.addEventListener('dragstart', function(e) {
+                e.dataTransfer.setData('text/plain', this.dataset.pos);
+            });
+
+            // Touch (móvil)
+            piece.addEventListener('touchstart', function(e) {
+                const touch = e.touches[0];
+                piece.dataset.dragging = 'true';
+                piece.style.position = 'absolute';
+                piece.style.left = `${touch.clientX - 50}px`;
+                piece.style.top = `${touch.clientY - 50}px`;
+                e.preventDefault();
+            });
+
+            piece.addEventListener('touchmove', function(e) {
+                if (piece.dataset.dragging === 'true') {
+                    const touch = e.touches[0];
+                    piece.style.left = `${touch.clientX - 50}px`;
+                    piece.style.top = `${touch.clientY - 50}px`;
+                    e.preventDefault();
+                }
+            });
+
+            piece.addEventListener('touchend', function(e) {
+                if (piece.dataset.dragging === 'true') {
+                    const touch = e.changedTouches[0];
+                    const slot = document.elementFromPoint(touch.clientX, touch.clientY);
+                    
+                    if (slot && slot.classList.contains('puzzle-slot') && piece.dataset.pos === slot.dataset.pos) {
+                        slot.appendChild(piece);
+                        piece.style.position = 'static';
+                        colocadas++;
+                        if (colocadas === totalPiezas) mostrarRecompensa();
+                    } else {
+                        piece.style.position = 'static';
+                    }
+                    piece.dataset.dragging = 'false';
+                }
+            });
+        });
 
     // Inicializar el contador si existe
     if (piezasColocadas) {
@@ -873,7 +985,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Inicializar el tablero
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
-                const cell = document.createElement('div');
+                const cell = document.createElement('input');
+                cell.type = 'text';
+                cell.inputMode = 'numeric';
+                cell.min = '1';
+                cell.max = '9';
                 cell.className = 'sudoku-cell';
                 cell.dataset.row = row;
                 cell.dataset.col = col;
@@ -899,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     
                     // Manejar entrada por teclado
-                    cell.addEventListener('keydown', (e) => {
+                    cell.addEventListener('input', (e) => {
                         // Solo permitir números del 1 al 9
                         if (e.key >= '1' && e.key <= '9') {
                             audioClick.currentTime = 0;
