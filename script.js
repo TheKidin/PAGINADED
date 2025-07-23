@@ -250,49 +250,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
                 
             case "rompecabezas":
-    const imagenesRompecabezas = [
-        'img/art-steve.jpg',
-        'img/1.png',
-        'img/2.png',
-        'img/3.png',
-        'img/4.png',
-        'img/5.png',
-        'img/6.png',
-        'img/7.png',
-        'img/mini_penitente.png'
-    ];
-    
-    const imagenAleatoria = imagenesRompecabezas[Math.floor(Math.random() * imagenesRompecabezas.length)];
-    
-    contenedorJuego.innerHTML = `
-    <div class="puzzle-header">
-        <h2>ROMPECABEZAS RETRO</h2>
-        <p class="subtitle">Arrastra las piezas a su posición correcta</p>
-    </div>
-    <div class="puzzle-area">
-        <div class="puzzle-container">
-            <div class="puzzle-pieces-container">
-                <div class="puzzle-title">PIEZAS</div>
-                <div class="puzzle-pieces"></div>
-            </div>
-            <div class="puzzle-board-container">
-                <div class="puzzle-title">TABLERO</div>
-                <div class="puzzle-board"></div>
-            </div>
-        </div>
-        <div class="puzzle-controls">
-            </div>
-        </div>
-    </div>`;
-    
-    const img = new Image();
-    img.crossOrigin = "Anonymous";
-    cargarYDividirImagen(imagenAleatoria);
-    img.onerror = function() {
-        console.error('Error al cargar la imagen');
-        puzzlePieces.innerHTML = '<p class="error-puzzle">Error al cargar el puzzle. Intenta recargar.</p>';
-    };
-    break;
+                const imagenesRompecabezas = [
+                    'img/art-steve.jpg',
+                    'img/1.png',
+                    'img/2.png',
+                    'img/3.png',
+                    'img/4.png',
+                    'img/5.png',
+                    'img/6.png',
+                    'img/7.png',
+                    'img/mini_penitente.png'
+                ];
+                
+                const imagenAleatoria = imagenesRompecabezas[Math.floor(Math.random() * imagenesRompecabezas.length)];
+                
+                contenedorJuego.innerHTML = `
+                <div class="puzzle-header">
+                    <h2>ROMPECABEZAS RETRO</h2>
+                    <p class="subtitle">Arrastra las piezas a su posición correcta</p>
+                </div>
+                <div class="puzzle-area">
+                    <div class="puzzle-container">
+                        <div class="puzzle-pieces-container">
+                            <div class="puzzle-title">PIEZAS</div>
+                            <div class="puzzle-pieces"></div>
+                        </div>
+                        <div class="puzzle-board-container">
+                            <div class="puzzle-title">TABLERO</div>
+                            <div class="puzzle-board"></div>
+                        </div>
+                    </div>
+                    <div class="puzzle-controls">
+                        </div>
+                    </div>
+                </div>`;
+                
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                cargarYDividirImagen(imagenAleatoria);
+                img.onerror = function() {
+                    console.error('Error al cargar la imagen');
+                    puzzlePieces.innerHTML = '<p class="error-puzzle">Error al cargar el puzzle. Intenta recargar.</p>';
+                };
+                break;
                 
             case "memoria":
                 const simbolosMemoria = [
@@ -393,8 +393,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupSecuencia(secuenciaBase) {
+        const origen = document.querySelector('.secuencia-origen');
         const destino = document.querySelector('.secuencia-destino');
-        const numeros = document.querySelectorAll('.numero');
         const btnVerificar = document.getElementById('btn-verificar-secuencia');
         const btnReiniciar = document.getElementById('btn-reiniciar-secuencia');
         const tiempoElement = document.getElementById('tiempo');
@@ -404,122 +404,78 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        let tiempoRestante = 60;
         let numerosColocados = [];
-        const secuenciaCorrecta = secuenciaBase.join(',');
+        let numeroArrastrado = null;
+        let tiempoRestante = 60;
+        let temporizadorSecuencia = null;
 
-        function manejarDropTouch(e) {
-            e.preventDefault();
-            const touch = e.changedTouches[0];
-            const elementoArrastrado = document.querySelector('[data-dragging="true"]');
-            
-            if (elementoArrastrado && destino.contains(document.elementFromPoint(touch.clientX, touch.clientY))) {
-                const valor = elementoArrastrado.dataset.valor;
-                if (!numerosColocados.includes(valor)) {
-                    const clon = elementoArrastrado.cloneNode(true);
-                    clon.draggable = false;
-                    clon.classList.add('colocado');
-                    destino.appendChild(clon);
-                    numerosColocados.push(valor);
-                    verificarSecuencia();
-                }
-            }
-            if (elementoArrastrado) elementoArrastrado.dataset.dragging = 'false';
-        }
-
-        // Configurar eventos táctiles
-        numeros.forEach(numero => {
-            // Ratón (desktop)
-            numero.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('text/plain', e.target.dataset.valor);
-            });
-
-            // Touch (móvil)
-            numero.addEventListener('touchstart', (e) => {
-                const touch = e.touches[0];
-                numero.dataset.dragging = 'true';
-                numero.style.position = 'absolute';
-                numero.style.zIndex = '1000';
-                numero.style.left = `${touch.clientX - 30}px`;
-                numero.style.top = `${touch.clientY - 30}px`;
-                e.preventDefault();
-            });
-
-            numero.addEventListener('touchmove', (e) => {
-                if (numero.dataset.dragging === 'true') {
-                    const touch = e.touches[0];
-                    const rect = numero.getBoundingClientRect();
-                    numero.style.left = `${touch.clientX - rect.width / 2}px`;
-                    numero.style.top = `${touch.clientY - rect.height / 2}px`;
-                    e.preventDefault();
-                }
-            });
-
-            numero.addEventListener('touchend', manejarDropTouch);
-        });
-
-        // Configurar destino
-        destino.addEventListener('dragover', (e) => e.preventDefault());
-        destino.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const valor = e.dataTransfer.getData('text/plain');
-            if (!numerosColocados.includes(valor)) {
-                const numero = document.querySelector(`.numero[data-valor="${valor}"]`);
-                if (!numero) return;
-                
-                const clon = numero.cloneNode(true);
-                clon.draggable = false;
-                clon.classList.add('colocado');
-                destino.appendChild(clon);
-                numerosColocados.push(valor);
-                verificarSecuencia();
-            }
-        });
-        
-        function iniciarTemporizador() {
-            tiempoElement.style.color = '#0f0';
-            tiempoElement.style.animation = 'none';
-            
-            temporizadorSecuencia = setInterval(() => {
-                tiempoRestante--;
-                tiempoElement.textContent = tiempoRestante;
-
-                if (tiempoRestante <= 10) {
-                    tiempoElement.style.color = '#f00';
-                    tiempoElement.style.animation = 'parpadeo 0.5s infinite';
-                }
-
-                if (tiempoRestante <= 0) {
-                    clearInterval(temporizadorSecuencia);
-                    audioError.currentTime = 0;
-                    audioError.play().catch(e => console.log('Error al reproducir audio de error'));
-                    alert("¡Tiempo agotado! Intenta de nuevo.");
-                    reiniciarSecuencia();
-                }
-            }, 1000);
-        }
-
-        function reiniciarSecuencia() {
-            clearInterval(temporizadorSecuencia);
-            if (destino) destino.innerHTML = '';
-            numerosColocados = [];
-            tiempoRestante = 60;
-            if (tiempoElement) {
-                tiempoElement.textContent = tiempoRestante;
-                tiempoElement.style.color = '#0f0';
-                tiempoElement.style.animation = 'none';
-            }
-            iniciarTemporizador();
-        }
-
+        // Configurar eventos para los números
         document.querySelectorAll('.numero').forEach(numero => {
+            // Eventos para desktop
             numero.addEventListener('dragstart', (e) => {
                 audioClick.currentTime = 0;
                 audioClick.play().catch(e => console.log('Error al reproducir click'));
                 e.dataTransfer.setData('text/plain', e.target.dataset.valor);
             });
+
+            // Eventos táctiles mejorados para móvil
+            let touchStartX, touchStartY;
+            
+            numero.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                
+                numero.dataset.dragging = 'true';
+                numero.style.position = 'fixed';
+                numero.style.zIndex = '1000';
+                numero.style.left = `${touch.clientX - 30}px`;
+                numero.style.top = `${touch.clientY - 30}px`;
+                numero.style.transition = 'none';
+            });
+
+            numero.addEventListener('touchmove', (e) => {
+                if (numero.dataset.dragging === 'true') {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    numero.style.left = `${touch.clientX - 30}px`;
+                    numero.style.top = `${touch.clientY - 30}px`;
+                }
+            });
+
+            numero.addEventListener('touchend', (e) => {
+                if (numero.dataset.dragging === 'true') {
+                    e.preventDefault();
+                    numero.dataset.dragging = 'false';
+                    numero.style.position = 'static';
+                    numero.style.zIndex = '';
+                    
+                    const touch = e.changedTouches[0];
+                    const elementoDestino = document.elementFromPoint(touch.clientX, touch.clientY);
+                    
+                    if (elementoDestino && elementoDestino.classList.contains('secuencia-destino')) {
+                        const valor = numero.dataset.valor;
+                        if (!numerosColocados.includes(valor)) {
+                            const clon = numero.cloneNode(true);
+                            clon.draggable = false;
+                            clon.classList.add('colocado');
+                            
+                            // Eliminar eventos táctiles del clon para evitar duplicados
+                            clon.ontouchstart = null;
+                            clon.ontouchmove = null;
+                            clon.ontouchend = null;
+                            
+                            elementoDestino.appendChild(clon);
+                            numerosColocados.push(valor);
+                            verificarSecuencia();
+                        }
+                    }
+                }
+            });
         });
 
+        // Configurar destino para desktop
         destino.addEventListener('dragover', (e) => {
             e.preventDefault();
             e.target.classList.add('hover');
@@ -560,16 +516,58 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        function iniciarTemporizador() {
+            tiempoElement.style.color = '#0f0';
+            tiempoElement.style.animation = 'none';
+            
+            temporizadorSecuencia = setInterval(() => {
+                tiempoRestante--;
+                tiempoElement.textContent = tiempoRestante;
+
+                if (tiempoRestante <= 10) {
+                    tiempoElement.style.color = '#f00';
+                    tiempoElement.style.animation = 'parpadeo 0.5s infinite';
+                }
+
+                if (tiempoRestante <= 0) {
+                    clearInterval(temporizadorSecuencia);
+                    audioError.currentTime = 0;
+                    audioError.play().catch(e => console.log('Error al reproducir audio de error'));
+                    alert("¡Tiempo agotado! Intenta de nuevo.");
+                    reiniciarSecuencia();
+                }
+            }, 1000);
+        }
+
+        function reiniciarSecuencia() {
+            clearInterval(temporizadorSecuencia);
+            if (destino) destino.innerHTML = '';
+            numerosColocados = [];
+            tiempoRestante = 60;
+            if (tiempoElement) {
+                tiempoElement.textContent = tiempoRestante;
+                tiempoElement.style.color = '#0f0';
+                tiempoElement.style.animation = 'none';
+            }
+            iniciarTemporizador();
+        }
+
         function verificarSecuencia() {
             if (numerosColocados.length === secuenciaBase.length) {
-                if (numerosColocados.join(',') === secuenciaCorrecta) {
+                // Convertir a números para comparación adecuada
+                const secuenciaIngresada = Array.from(document.querySelectorAll('.secuencia-destino .numero'))
+                    .map(el => parseInt(el.dataset.valor));
+                
+                const esCorrecta = secuenciaIngresada.every((val, i) => val === secuenciaBase[i]);
+                
+                if (esCorrecta) {
                     audioSuccess.currentTime = 0;
-                    audioSuccess.play().catch(e => console.log('Error al reproducir audio de éxito'));
+                    audioSuccess.play();
                     clearInterval(temporizadorSecuencia);
                     setTimeout(mostrarRecompensa, 1000);
                 } else {
                     audioError.currentTime = 0;
-                    audioError.play().catch(e => console.log('Error al reproducir audio de error'));
+                    audioError.play();
                     destino.classList.add('incorrecto');
                     setTimeout(() => {
                         destino.classList.remove('incorrecto');
@@ -694,16 +692,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupPuzzle() {
-    const pieces = document.querySelectorAll('.puzzle-piece');
-    const slots = document.querySelectorAll('.puzzle-slot');
-    const piezasColocadas = document.getElementById('piezas-colocadas');
-    
-    if (!pieces.length || !slots.length) return;
-    
-    const totalPiezas = pieces.length;
-    let colocadas = 0;
+        const pieces = document.querySelectorAll('.puzzle-piece');
+        const slots = document.querySelectorAll('.puzzle-slot');
+        const piezasColocadas = document.getElementById('piezas-colocadas');
+        
+        if (!pieces.length || !slots.length) return;
+        
+        const totalPiezas = pieces.length;
+        let colocadas = 0;
+        let activePiece = null;
+        let touchOffset = { x: 0, y: 0 };
 
-    // Eventos táctiles para móviles
+        // Eventos táctiles para móviles
         pieces.forEach(piece => {
             // Ratón (desktop)
             piece.addEventListener('dragstart', function(e) {
@@ -747,83 +747,83 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-    // Inicializar el contador si existe
-    if (piezasColocadas) {
-        piezasColocadas.textContent = `0/${totalPiezas}`;
-    }
+        // Inicializar el contador si existe
+        if (piezasColocadas) {
+            piezasColocadas.textContent = `0/${totalPiezas}`;
+        }
 
-    pieces.forEach(piece => {
-        piece.addEventListener('dragstart', function(e) {
-            audioClick.currentTime = 0;
-            audioClick.play().catch(e => console.log('Error al reproducir click'));
-            e.dataTransfer.setData('text/plain', this.dataset.pos);
-            this.classList.add('dragging');
+        pieces.forEach(piece => {
+            piece.addEventListener('dragstart', function(e) {
+                audioClick.currentTime = 0;
+                audioClick.play().catch(e => console.log('Error al reproducir click'));
+                e.dataTransfer.setData('text/plain', this.dataset.pos);
+                this.classList.add('dragging');
+            });
+
+            piece.addEventListener('dragend', function() {
+                this.classList.remove('dragging');
+            });
         });
 
-        piece.addEventListener('dragend', function() {
-            this.classList.remove('dragging');
-        });
-    });
+        slots.forEach(slot => {
+            slot.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('highlight');
+            });
 
-    slots.forEach(slot => {
-        slot.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('highlight');
-        });
+            slot.addEventListener('dragleave', function() {
+                this.classList.remove('highlight');
+            });
 
-        slot.addEventListener('dragleave', function() {
-            this.classList.remove('highlight');
-        });
-
-        slot.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('highlight');
-            
-            const piecePos = e.dataTransfer.getData('text/plain');
-            const draggedPiece = document.querySelector(`.puzzle-piece[data-pos="${piecePos}"]:not(.placed)`);
-            
-            if (!draggedPiece) return;
-            
-            if (piecePos === this.dataset.pos) {
-                audioSuccess.currentTime = 0;
-                audioSuccess.play().catch(e => console.log('Error al reproducir audio de éxito'));
+            slot.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('highlight');
                 
-                // Si ya hay una pieza en este slot, la removemos
-                if (this.firstChild) {
-                    const existingPiece = this.firstChild;
-                    existingPiece.classList.remove('placed');
-                    existingPiece.draggable = true;
-                    existingPiece.style.width = '';
-                    existingPiece.style.height = '';
-                    document.querySelector('.puzzle-pieces').appendChild(existingPiece);
-                    colocadas--;
+                const piecePos = e.dataTransfer.getData('text/plain');
+                const draggedPiece = document.querySelector(`.puzzle-piece[data-pos="${piecePos}"]:not(.placed)`);
+                
+                if (!draggedPiece) return;
+                
+                if (piecePos === this.dataset.pos) {
+                    audioSuccess.currentTime = 0;
+                    audioSuccess.play().catch(e => console.log('Error al reproducir audio de éxito'));
+                    
+                    // Si ya hay una pieza en este slot, la removemos
+                    if (this.firstChild) {
+                        const existingPiece = this.firstChild;
+                        existingPiece.classList.remove('placed');
+                        existingPiece.draggable = true;
+                        existingPiece.style.width = '';
+                        existingPiece.style.height = '';
+                        document.querySelector('.puzzle-pieces').appendChild(existingPiece);
+                        colocadas--;
+                    }
+                    
+                    // Colocamos la nueva pieza
+                    draggedPiece.classList.add('placed');
+                    draggedPiece.draggable = false;
+                    draggedPiece.style.width = '100%';
+                    draggedPiece.style.height = '100%';
+                    this.appendChild(draggedPiece);
+                    
+                    colocadas++;
+                    if (piezasColocadas) {
+                        piezasColocadas.textContent = `${colocadas}/${totalPiezas}`;
+                    }
+                    
+                    if (colocadas === totalPiezas) {
+                        setTimeout(mostrarRecompensa, 1000);
+                    }
+                } else {
+                    audioError.currentTime = 0;
+                    audioError.play().catch(e => console.log('Error al reproducir audio de error'));
+                    this.classList.add('incorrect');
+                    setTimeout(() => {
+                        this.classList.remove('incorrect');
+                    }, 500);
                 }
-                
-                // Colocamos la nueva pieza
-                draggedPiece.classList.add('placed');
-                draggedPiece.draggable = false;
-                draggedPiece.style.width = '100%';
-                draggedPiece.style.height = '100%';
-                this.appendChild(draggedPiece);
-                
-                colocadas++;
-                if (piezasColocadas) {
-                    piezasColocadas.textContent = `${colocadas}/${totalPiezas}`;
-                }
-                
-                if (colocadas === totalPiezas) {
-                    setTimeout(mostrarRecompensa, 1000);
-                }
-            } else {
-                audioError.currentTime = 0;
-                audioError.play().catch(e => console.log('Error al reproducir audio de error'));
-                this.classList.add('incorrect');
-                setTimeout(() => {
-                    this.classList.remove('incorrect');
-                }, 500);
-            }
+            });
         });
-    });
 
         btnReiniciar.addEventListener('click', () => {
             audioClick.currentTime = 0;
@@ -986,8 +986,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Inicializar el tablero
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
-                const cell = document.createElement('div');
-                cell.type = 'text';
+                const cell = document.createElement('input');
+                cell.type = 'number';
                 cell.inputMode = 'numeric';
                 cell.min = '1';
                 cell.max = '9';
@@ -1214,21 +1214,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function mostrarRecompensa() {
-    // Detener cualquier audio o temporizador activo
-    audioSuccess.currentTime = 0;
-    audioSuccess.play().catch(e => console.error('Error audio:', e));
-    
-    // Ocultar pantallas innecesarias
-    document.getElementById('minijuegos').classList.add('hidden');
-    document.getElementById('bienvenida').classList.add('hidden');
-    
-    // Mostrar recompensa y enfocar el botón
-    const recompensa = document.getElementById('recompensa');
-    recompensa.classList.remove('hidden');
-    document.getElementById('btn-entrar').focus();
-    
-    console.log("Recompensa mostrada"); // Para debug
-}
+        // Detener cualquier audio o temporizador activo
+        audioSuccess.currentTime = 0;
+        audioSuccess.play().catch(e => console.error('Error audio:', e));
+        
+        // Ocultar pantallas innecesarias
+        document.getElementById('minijuegos').classList.add('hidden');
+        document.getElementById('bienvenida').classList.add('hidden');
+        
+        // Mostrar recompensa y enfocar el botón
+        const recompensa = document.getElementById('recompensa');
+        recompensa.classList.remove('hidden');
+        document.getElementById('btn-entrar').focus();
+        
+        console.log("Recompensa mostrada"); // Para debug
+    }
 
     document.getElementById('btn-entrar')?.addEventListener('click', () => {
         // Crear modal retro
