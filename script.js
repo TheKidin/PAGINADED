@@ -594,19 +594,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const pieceWidth = Math.floor(img.width / cols);
             const pieceHeight = Math.floor(img.height / rows);
             
-            // Ajustar tamaño del tablero
-            puzzleBoard.style.display = 'grid';
-            puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, ${pieceWidth}px)`;
-            puzzleBoard.style.gridTemplateRows = `repeat(${rows}, ${pieceHeight}px)`;
-            puzzleBoard.style.gap = '2px';
+            // LÍNEAS PROBLEMÁTICAS COMENTADAS - Dejamos que el CSS controle el layout
+            // puzzleBoard.style.display = 'grid';
+            // puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, ${pieceWidth}px)`;
+            // puzzleBoard.style.gridTemplateRows = `repeat(${rows}, ${pieceHeight}px)`;
+            // puzzleBoard.style.gap = '2px';
             
             // Crear slots vacíos
             for (let i = 1; i <= rows * cols; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'puzzle-slot';
                 slot.dataset.pos = i;
-                slot.style.width = `${pieceWidth}px`;
-                slot.style.height = `${pieceHeight}px`;
+                // LÍNEAS PROBLEMÁTICAS COMENTADAS - El CSS se encarga del tamaño
+                // slot.style.width = `${pieceWidth}px`;
+                // slot.style.height = `${pieceHeight}px`;
                 puzzleBoard.appendChild(slot);
             }
             
@@ -681,9 +682,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Asegurarse de que el tablero tenga slots
             puzzleBoard.innerHTML = '';
-            puzzleBoard.style.display = 'grid';
-            puzzleBoard.style.gridTemplateColumns = 'repeat(3, 100px)';
-            puzzleBoard.style.gridTemplateRows = 'repeat(3, 100px)';
+            // LÍNEAS PROBLEMÁTICAS COMENTADAS
+            // puzzleBoard.style.display = 'grid';
+            // puzzleBoard.style.gridTemplateColumns = 'repeat(3, 100px)';
+            // puzzleBoard.style.gridTemplateRows = 'repeat(3, 100px)';
             
             for (let i = 1; i <= 9; i++) {
                 const slot = document.createElement('div');
