@@ -439,8 +439,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const touch = e.touches[0];
                 numero.dataset.dragging = 'true';
                 numero.style.position = 'absolute';
-                numero.style.left = `${touch.clientX - 50}px`;
-                numero.style.top = `${touch.clientY - 50}px`;
+                numero.style.zIndex = '1000';
+                numero.style.left = `${touch.clientX - 30}px`;
+                numero.style.top = `${touch.clientY - 30}px`;
                 e.preventDefault();
             });
 
@@ -985,11 +986,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Inicializar el tablero
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
-                const cell = document.createElement('input');
+                const cell = document.createElement('div');
                 cell.type = 'text';
                 cell.inputMode = 'numeric';
                 cell.min = '1';
                 cell.max = '9';
+                cell.textContent = board[row][col] === 0 ? '' : board[row][col];
+                grid.appendChild(cell);
                 cell.className = 'sudoku-cell';
                 cell.dataset.row = row;
                 cell.dataset.col = col;
