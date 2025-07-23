@@ -591,23 +591,27 @@ document.addEventListener('DOMContentLoaded', () => {
         img.onload = function() {
             const rows = 3;
             const cols = 3;
-            const pieceWidth = Math.floor(img.width / cols);
-            const pieceHeight = Math.floor(img.height / rows);
             
-            // LÍNEAS PROBLEMÁTICAS COMENTADAS - Dejamos que el CSS controle el layout
-            // puzzleBoard.style.display = 'grid';
-            // puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, ${pieceWidth}px)`;
-            // puzzleBoard.style.gridTemplateRows = `repeat(${rows}, ${pieceHeight}px)`;
-            // puzzleBoard.style.gap = '2px';
+            // Tamaño responsivo basado en el viewport
+            const maxWidth = Math.min(window.innerWidth * 0.8, 500); // Máximo 500px o 80% del ancho
+            const containerWidth = maxWidth - 40; // Ajustar por padding
+            const pieceWidth = Math.floor(containerWidth / cols);
+            const pieceHeight = pieceWidth; // Mantener relación cuadrada
+            
+            // Configurar el tablero
+            puzzleBoard.style.display = 'grid';
+            puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            puzzleBoard.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+            puzzleBoard.style.width = `${pieceWidth * cols}px`;
+            puzzleBoard.style.height = `${pieceHeight * rows}px`;
+            puzzleBoard.style.margin = '0 auto';
+            puzzleBoard.style.gap = '2px';
             
             // Crear slots vacíos
             for (let i = 1; i <= rows * cols; i++) {
                 const slot = document.createElement('div');
                 slot.className = 'puzzle-slot';
                 slot.dataset.pos = i;
-                // LÍNEAS PROBLEMÁTICAS COMENTADAS - El CSS se encarga del tamaño
-                // slot.style.width = `${pieceWidth}px`;
-                // slot.style.height = `${pieceHeight}px`;
                 puzzleBoard.appendChild(slot);
             }
             
@@ -617,6 +621,8 @@ document.addEventListener('DOMContentLoaded', () => {
             puzzlePieces.style.flexWrap = 'wrap';
             puzzlePieces.style.gap = '10px';
             puzzlePieces.style.justifyContent = 'center';
+            puzzlePieces.style.maxWidth = `${pieceWidth * cols}px`;
+            puzzlePieces.style.margin = '0 auto';
             
             let pieces = [];
             for (let row = 0; row < rows; row++) {
@@ -627,7 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     canvas.height = pieceHeight;
                     const ctx = canvas.getContext('2d');
                     
-                    // Dibujar la porción de imagen correspondiente
+                    // Dibujar la porción de imagen
                     ctx.drawImage(
                         img,
                         col * pieceWidth, row * pieceHeight, pieceWidth, pieceHeight,
@@ -639,11 +645,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     piece.draggable = true;
                     piece.dataset.pos = pos;
                     
-                    // Usar la imagen directamente en lugar de canvas para mejor rendimiento
                     const imgPiece = document.createElement('img');
                     imgPiece.src = canvas.toDataURL();
-                    imgPiece.style.width = '100%';
-                    imgPiece.style.height = '100%';
+                    imgPiece.style.maxWidth = '100%';
+                    imgPiece.style.height = 'auto';
                     imgPiece.alt = `Pieza ${pos}`;
                     
                     piece.appendChild(imgPiece);
@@ -662,9 +667,26 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error al cargar la imagen del puzzle');
             puzzlePieces.innerHTML = '';
             
-            // Crear piezas de texto como fallback
+            // Fallback con piezas de texto
+            const pieceSize = Math.min(window.innerWidth * 0.2, 100); // 20% del ancho o máximo 100px
             const textParts = ['PIE', 'ZAS', 'DEL', 'PUI', 'ZZL', 'E!!', 'INT', 'ENT', 'A!!'];
             
+            // Configurar el tablero para el fallback
+            puzzleBoard.style.display = 'grid';
+            puzzleBoard.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            puzzleBoard.style.gridTemplateRows = 'repeat(3, 1fr)';
+            puzzleBoard.style.width = `${pieceSize * 3}px`;
+            puzzleBoard.style.height = `${pieceSize * 3}px`;
+            puzzleBoard.style.margin = '0 auto';
+            
+            for (let i = 1; i <= 9; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'puzzle-slot';
+                slot.dataset.pos = i;
+                puzzleBoard.appendChild(slot);
+            }
+            
+            // Crear piezas de texto
             for (let i = 0; i < 9; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
@@ -677,21 +699,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 piece.style.fontSize = '24px';
                 piece.style.color = '#0f0';
                 piece.style.border = '1px solid #0f0';
+                piece.style.width = `${pieceSize}px`;
+                piece.style.height = `${pieceSize}px`;
                 puzzlePieces.appendChild(piece);
-            }
-            
-            // Asegurarse de que el tablero tenga slots
-            puzzleBoard.innerHTML = '';
-            // LÍNEAS PROBLEMÁTICAS COMENTADAS
-            // puzzleBoard.style.display = 'grid';
-            // puzzleBoard.style.gridTemplateColumns = 'repeat(3, 100px)';
-            // puzzleBoard.style.gridTemplateRows = 'repeat(3, 100px)';
-            
-            for (let i = 1; i <= 9; i++) {
-                const slot = document.createElement('div');
-                slot.className = 'puzzle-slot';
-                slot.dataset.pos = i;
-                puzzleBoard.appendChild(slot);
             }
             
             setupPuzzle();
@@ -1413,5 +1423,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 3000);
         });
+    });
+
+    // Añadir event listener para redimensionamiento
+    window.addEventListener('resize', function() {
+        if (juegoActual === 'rompecabezas') {
+            const imgSrc = document.querySelector('.puzzle-pieces img')?.src;
+            if (imgSrc) {
+                cargarYDividirImagen(imgSrc);
+            }
+        }
     });
 });
