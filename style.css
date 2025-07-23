@@ -536,6 +536,7 @@ button {
     cursor: grab;
     touch-action: none;
     user-select: none;
+    position: relative;
 }
 
 .puzzle-piece:hover {
@@ -1130,6 +1131,6 @@ input, button, .numero, .puzzle-piece {
 
 /* Mejorar feedback táctil */
 .numero:active, .puzzle-piece:active {
-    transform: scale(0.95);
+    transform: scale(1.05);
     opacity: 0.8;
 }
