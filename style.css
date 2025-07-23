@@ -523,6 +523,7 @@ button {
     touch-action: none;
     user-select: none;
     background: rgba(0, 255, 0, 0.1); /* Fondo temporal */
+    overflow: hidden;
 }
 
 .puzzle-piece:hover {
@@ -534,6 +535,13 @@ button {
     transform: scale(1.08) rotate(5deg);
     z-index: 10;
     box-shadow: 0 0 15px var(--accent-color);
+}
+
+.puzzle-piece img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
 }
 
 /* MODIFIED: Slots del tablero */
