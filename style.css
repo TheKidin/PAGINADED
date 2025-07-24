@@ -1019,9 +1019,13 @@ button {
     }
 
     .puzzle-pieces, .puzzle-board {
-        width: 250px;
-        height: 250px;
-    }
+    width: 100%;
+    max-width: 340px;
+    max-height: 340px;
+    aspect-ratio: 1 / 1;
+    min-width: 240px;
+    min-height: 240px;
+}
     
     .trivia-question {
         font-size: 2.2rem;
