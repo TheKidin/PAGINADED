@@ -463,19 +463,20 @@ button {
     padding: 15px;
     box-sizing: border-box;
     grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
 }
 
 .puzzle-container {
   display: flex;
   flex-direction: row; /* cambiar de column a row */
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
   gap: 20px;
   width: 100%;
   max-width: 720px;
   margin: 0 auto;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 .puzzle-pieces-container, .puzzle-board-container {
