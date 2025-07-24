@@ -500,22 +500,6 @@ button {
     font-size: 1.2rem;
     color: var(--accent-color);
 }
-
-.puzzle-pieces {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  max-width: 340px;
-  margin: 0 auto;
-  padding: 5px;
-  background: rgba(0, 30, 0, 0.2);
-  border: 2px solid var(--accent-color);
-  border-radius: 12px;
-  box-sizing: border-box;
-}
-
-
   .puzzle-board {
   display: grid;
   grid-template-columns: repeat(3, 100px);
