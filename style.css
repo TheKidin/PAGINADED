@@ -479,12 +479,20 @@ button {
   overflow-x: hidden;
 }
 
-.puzzle-pieces-container, .puzzle-board-container {
-  max-width: 340px;
-  min-width: 0;
-  display: flex;
-  flex: 1 1 0;
-  align-items: center;
+ .puzzle-board-container {
+    overflow: hidden;
+    height: auto;
+    align-items: stretch;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.puzzle-pieces-container {
+    overflow: hidden;
+    height: auto;
+    align-items: stretch;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .puzzle-title {
