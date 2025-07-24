@@ -472,9 +472,9 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-  gap: 20px;
+  gap: 30px;
   width: 100%;
-  max-width: 720px;
+  max-width: 100%;
   margin: 0 auto;
   overflow-x: hidden;
 }
@@ -517,21 +517,35 @@ button {
 }
 
 
-  .puzzle-pieces, .puzzle-board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 4px;
-    width: 100%;
-    max-width: 340px;
-    height: 100%; /* Altura fija */
-    margin: 0 auto;
-    padding: 2px;
-    background: rgba(0, 30, 0, 0.2);
-    border: 2px solid var(--accent-color);
-    border-radius: 12px;
-    box-sizing: border-box;
+  .puzzle-board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 4px;
+  width: 310px;
+  height: 310px;
+  background: rgba(0, 30, 0, 0.2);
+  border: 2px solid var(--accent-color);
+  border-radius: 12px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 2px;
 }
+
+.puzzle-pieces {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-auto-rows: 100px;
+  gap: 4px;
+  width: 310px;
+  background: rgba(0, 30, 0, 0.2);
+  border: 2px solid var(--accent-color);
+  border-radius: 12px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 2px;
+}
+
 
 .puzzle-piece {
     border: 1px solid var(--text-color);
@@ -605,13 +619,12 @@ button {
 
 .puzzle-pieces-container,
 .puzzle-board-container {
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    max-height: 340px;
-    overflow: hidden;
+     display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  overflow: visible;
 }
 
 /* ==================== SUDOKU ==================== */
