@@ -453,22 +453,22 @@ button {
 
 /* ==================== JUEGO DE PUZZLE - ACTUALIZADO ==================== */
 .puzzle-area {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    margin: 20px auto;
     padding: 15px;
-    width: 100%;
-    max-width: 500px;
     box-sizing: border-box;
 }
 
 .puzzle-container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
     width: 100%;
+    gap: 24px;
 }
 
 .puzzle-pieces-container, .puzzle-board-container {
@@ -489,16 +489,16 @@ button {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 2px;
+    gap: 4px;
     margin: 0 auto;
     padding: 2px;
     background: rgba(0, 30, 0, 0.2);
     border: 2px solid var(--accent-color);
-    border-radius: 8px;
+    border-radius: 12px;
     width: 100%;
     max-width: 500px;
     aspect-ratio: 1 / 1;
-
+    box-sizing: border-box;
 }
 
 .puzzle-piece {
@@ -508,12 +508,6 @@ button {
     touch-action: none;
     user-select: none;
     background: rgba(0, 255, 0, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    object-fit: contain;
-
 }
 
 .puzzle-piece.dragging {
@@ -523,11 +517,18 @@ button {
 }
 
 .puzzle-slot {
-    width: 100%;
-    height: 100%;
     border: 1px dashed var(--text-color);
     background: rgba(0, 255, 0, 0.05);
     transition: all 0.3s;
+}
+.puzzle-piece, .puzzle-slot {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .puzzle-slot.highlight {
@@ -561,11 +562,12 @@ button {
 .puzzle-piece img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     display: block;
     max-width: 100%;
     max-height: 100%;
     box-sizing: border-box;
+    border-radius: 4px;
 }
 
 /* ==================== SUDOKU ==================== */
@@ -915,9 +917,25 @@ button {
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 600px) {
-    /* Puzzle en móvil */
-    .puzzle-pieces, .puzzle-board {
-        max-width: 95vw;
+    .screen {
+        padding: 6px !important;
+        max-width: 100vw !important;
+        width: 100vw !important;
+    }
+
+    .puzzle-area,
+    .puzzle-pieces,
+    .puzzle-board {
+        max-width: 98vw !important;
+        width: 98vw !important;
+        min-width: 0 !important;
+    }
+    .puzzle-title {
+        font-size: 1rem;
+    }
+     .puzzle-controls {
+        flex-direction: column;
+        gap: 10px;
     }
     
     .opciones-trivia {

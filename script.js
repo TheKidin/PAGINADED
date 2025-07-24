@@ -590,7 +590,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         img.onload = function() {
             // Definir tamaño máximo para el puzzle
-            const maxPuzzleSize = 300;
+            const isMobile = window.innerWidth <= 600;
+            const maxPuzzleSize = isMobile ? Math.floor(window.innerWidth * 0.98) : 300; // Tamaño máximo del puzzle
             
             // Calcular proporciones
             const ratio = Math.min(maxPuzzleSize / img.width, maxPuzzleSize / img.height);
