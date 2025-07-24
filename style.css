@@ -486,7 +486,17 @@ button {
 }
 
 .puzzle-pieces {
-  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 340px;
+  margin: 0 auto;
+  padding: 5px;
+  background: rgba(0, 30, 0, 0.2);
+  border: 2px solid var(--accent-color);
+  border-radius: 12px;
+  box-sizing: border-box;
 }
 
 
@@ -529,14 +539,14 @@ button {
     background: rgba(0, 255, 0, 0.05);
     transition: all 0.3s;
 }
+
 .puzzle-piece, .puzzle-slot {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .puzzle-slot.highlight {
@@ -568,14 +578,11 @@ button {
 }
 
 .puzzle-piece img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    box-sizing: border-box;
-    border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
 }
 
 /* ==================== SUDOKU ==================== */
