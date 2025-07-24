@@ -12,7 +12,6 @@
     --scanline: rgba(0, 255, 0, 0.05);
     --font-primary: 'VT323', monospace;
     --font-secondary: 'Orbitron', sans-serif;
-    --puzzle-size : 100px;
 }
 
 /* ==================== ESTILOS BASE ==================== */
@@ -477,12 +476,6 @@ button {
   margin: 0 auto;
 }
 
-.puzzle-board {
-  max-width: 480px;
-  max-height: 480px;
-  aspect-ratio: 1 / 1;
-}
-
 .puzzle-pieces-container, .puzzle-board-container {
   width: auto;
   display: flex;
@@ -553,8 +546,8 @@ button {
 }
 
 .puzzle-piece, .puzzle-slot {
-  width: var(--puzzle-size);
-  height: var(--puzzle-size);
+  width: 100px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;

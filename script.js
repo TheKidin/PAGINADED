@@ -605,7 +605,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ajustar el tablero al tamaño calculado
             puzzleBoard.style.width  = `${scaledWidth}px`;
             puzzleBoard.style.height = `${scaledHeight}px`;
-            document.documentElement.style.setProperty('--puzzle-size', `${pieceWidth}px`);
 
             
             // Ajustar tamaño del tablero
