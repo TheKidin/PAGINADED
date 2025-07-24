@@ -470,7 +470,7 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 40px;
   flex-wrap: nowrap;
   width: 100%;
