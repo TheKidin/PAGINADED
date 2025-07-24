@@ -478,7 +478,7 @@ button {
 }
 
 .puzzle-pieces-container, .puzzle-board-container {
-  width: auto;
+  max-width: 340px;
   display: flex;
   flex: 1 1 0;
   align-items: center;
@@ -589,7 +589,7 @@ button {
   object-fit: cover;
   display: block;
   border-radius: 4px;
-  object-fit: co;
+  object-fit: contain;
 }
 
 /* ==================== SUDOKU ==================== */
