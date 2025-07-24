@@ -451,13 +451,6 @@ button {
     margin-top: 20px;
 }
 
-/* Efecto de revelación cuando se voltea */
-@keyframes cardReveal {
-    0% { transform: rotateY(0deg) scale(1); }
-    50% { transform: rotateY(90deg) scale(1.1); }
-    100% { transform: rotateY(180deg) scale(1); }
-}
-
 /* ==================== JUEGO DE PUZZLE - ACTUALIZADO ==================== */
 .puzzle-area {
     display: flex;
@@ -469,6 +462,7 @@ button {
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
+    overflow: auto;
 }
 
 .puzzle-container {
@@ -476,13 +470,17 @@ button {
     flex-direction: column;
     gap: 20px;
     width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .puzzle-pieces-container, .puzzle-board-container {
     width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: visible;
 }
 
 .puzzle-title {
@@ -793,6 +791,10 @@ button {
     transition: opacity 1s;
 }
 
+.axioma-principal.efecto-terminado {
+    opacity: 1 !important;
+}
+
 .sello-oficial {
     position: absolute;
     bottom: 40px;
@@ -812,7 +814,7 @@ button {
     transform: rotate(15deg);
 }
 
-.efecto-terminado {
+.sello-oficial.efecto-terminado {
     opacity: 1 !important;
 }
 

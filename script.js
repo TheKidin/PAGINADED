@@ -589,16 +589,25 @@ document.addEventListener('DOMContentLoaded', () => {
         img.crossOrigin = "Anonymous";
         
         img.onload = function() {
+            // Definir tamaño máximo para el puzzle
+            const maxPuzzleSize = Math.min(window.innerWidth * 0.8, 500); // Máximo 500px o 80% del ancho de la pantalla
+            
+            // Calcular proporciones
+            const ratio = Math.min(maxPuzzleSize / img.width, maxPuzzleSize / img.height);
+            const scaledWidth = img.width * ratio;
+            const scaledHeight = img.height * ratio;
+            
             const rows = 3;
             const cols = 3;
-            const pieceWidth = Math.floor(img.width / cols);
-            const pieceHeight = Math.floor(img.height / rows);
+            const pieceWidth = Math.floor(scaledWidth / cols);
+            const pieceHeight = Math.floor(scaledHeight / rows);
             
             // Ajustar tamaño del tablero
             puzzleBoard.style.display = 'grid';
             puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, ${pieceWidth}px)`;
             puzzleBoard.style.gridTemplateRows = `repeat(${rows}, ${pieceHeight}px)`;
             puzzleBoard.style.gap = '2px';
+            puzzleBoard.style.margin = '0 auto'; // Centrar el tablero
             
             // Crear slots vacíos
             for (let i = 1; i <= rows * cols; i++) {
@@ -616,6 +625,8 @@ document.addEventListener('DOMContentLoaded', () => {
             puzzlePieces.style.flexWrap = 'wrap';
             puzzlePieces.style.gap = '10px';
             puzzlePieces.style.justifyContent = 'center';
+            puzzlePieces.style.maxWidth = `${scaledWidth}px`; // Limitar ancho máximo
+            puzzlePieces.style.margin = '0 auto'; // Centrar las piezas
             
             let pieces = [];
             for (let row = 0; row < rows; row++) {
@@ -626,11 +637,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     canvas.height = pieceHeight;
                     const ctx = canvas.getContext('2d');
                     
-                    // Dibujar la porción de imagen correspondiente
+                    // Dibujar la porción de imagen escalada
                     ctx.drawImage(
                         img,
-                        col * pieceWidth, row * pieceHeight, pieceWidth, pieceHeight,
-                        0, 0, pieceWidth, pieceHeight
+                        col * (img.width / cols), 
+                        row * (img.height / rows), 
+                        img.width / cols, 
+                        img.height / rows,
+                        0, 
+                        0, 
+                        pieceWidth, 
+                        pieceHeight
                     );
                     
                     const piece = document.createElement('div');
@@ -638,7 +655,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     piece.draggable = true;
                     piece.dataset.pos = pos;
                     
-                    // Usar la imagen directamente en lugar de canvas para mejor rendimiento
                     const imgPiece = document.createElement('img');
                     imgPiece.src = canvas.toDataURL();
                     imgPiece.style.width = '100%';
@@ -682,8 +698,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Asegurarse de que el tablero tenga slots
             puzzleBoard.innerHTML = '';
             puzzleBoard.style.display = 'grid';
-            puzzleBoard.style.gridTemplateColumns = 'repeat(3, 100px)';
-            puzzleBoard.style.gridTemplateRows = 'repeat(3, 100px)';
+            puzzleBoard.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            puzzleBoard.style.gridTemplateRows = 'repeat(3, 1fr)';
+            puzzleBoard.style.width = '300px';
+            puzzleBoard.style.height = '300px';
+            puzzleBoard.style.margin = '0 auto';
             
             for (let i = 1; i <= 9; i++) {
                 const slot = document.createElement('div');
@@ -696,24 +715,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         img.src = imagenSrc;
-    }
-
-    function actualizarTableroPuzzle(rows, cols) {
-        const puzzleBoard = document.querySelector('.puzzle-board');
-        if (!puzzleBoard) return;
-        
-        puzzleBoard.innerHTML = '';
-        puzzleBoard.style.display = 'grid';
-        puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, 100px)`;
-        puzzleBoard.style.gridTemplateRows = `repeat(${rows}, 100px)`;
-        puzzleBoard.style.gap = '5px';
-        
-        for (let i = 1; i <= rows * cols; i++) {
-            const slot = document.createElement('div');
-            slot.className = 'puzzle-slot';
-            slot.dataset.pos = i;
-            puzzleBoard.appendChild(slot);
-        }
     }
 
     function setupPuzzle() {
