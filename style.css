@@ -12,6 +12,7 @@
     --scanline: rgba(0, 255, 0, 0.05);
     --font-primary: 'VT323', monospace;
     --font-secondary: 'Orbitron', sans-serif;
+    --puzzle-size : 100px;
 }
 
 /* ==================== ESTILOS BASE ==================== */
@@ -552,8 +553,8 @@ button {
 }
 
 .puzzle-piece, .puzzle-slot {
-  width: 100px;
-  height: 100px;
+  width: var(--puzzle-size);
+  height: var(--puzzle-size);
   display: flex;
   justify-content: center;
   align-items: center;
