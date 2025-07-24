@@ -505,23 +505,20 @@ button {
 }
 
 
-.puzzle-pieces, .puzzle-board {
+  .puzzle-pieces, .puzzle-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 4px;
+    width: 100%;
+    max-width: 340px;
+    height: 340px; /* Altura fija */
     margin: 0 auto;
     padding: 2px;
     background: rgba(0, 30, 0, 0.2);
     border: 2px solid var(--accent-color);
     border-radius: 12px;
-    width: 100%;
-    max-width: 340px;
-    min-width: 240px;
-    aspect-ratio: 1 / 1;
     box-sizing: border-box;
-    max-width: 340px;
-    max-height: 340px;
 }
 
 .puzzle-piece {
@@ -531,6 +528,7 @@ button {
     touch-action: none;
     user-select: none;
     background: rgba(0, 255, 0, 0.1);
+    overflow: hidden;
 }
 
 .puzzle-piece.dragging {
@@ -590,6 +588,7 @@ button {
   object-fit: cover;
   display: block;
   border-radius: 4px;
+  object-fit: co;
 }
 
 /* ==================== SUDOKU ==================== */
@@ -1039,15 +1038,6 @@ button {
         gap: 10px;
         align-items: center;
     }
-
-    .puzzle-pieces, .puzzle-board {
-    width: 100%;
-    max-width: 340px;
-    max-height: 340px;
-    aspect-ratio: 1 / 1;
-    min-width: 240px;
-    min-height: 240px;
-}
     
     .trivia-question {
         font-size: 2.2rem;
