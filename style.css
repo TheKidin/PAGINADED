@@ -473,11 +473,13 @@ button {
   align-items: flex-start;
   gap: 40px;
   flex-wrap: nowrap;
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
 }
+
  .puzzle-board-container {
     overflow: hidden;
     height: auto;
@@ -514,19 +516,20 @@ button {
   box-sizing: border-box;
 }
 
-
 .puzzle-pieces {
   display: grid;
   grid-template-columns: repeat(3, 100px);
-  grid-auto-rows: 100px;
+  grid-template-rows: repeat(3, 100px);
   gap: 5px;
   width: 310px;
+  height: 310px;
   background: rgba(0, 30, 0, 0.2);
   border: 2px solid var(--accent-color);
   border-radius: 12px;
   padding: 4px;
   box-sizing: border-box;
 }
+
 .puzzle-piece {
     border: 1px solid var(--text-color);
     transition: all 0.3s;
