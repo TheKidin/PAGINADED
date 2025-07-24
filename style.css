@@ -460,9 +460,8 @@ button {
     margin: 20px auto;
     padding: 15px;
     width: 100%;
-    max-width: 800px;
+    max-width: 320px;
     box-sizing: border-box;
-    overflow: auto;
 }
 
 .puzzle-container {
@@ -470,23 +469,19 @@ button {
     flex-direction: column;
     gap: 20px;
     width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
 }
 
 .puzzle-pieces-container, .puzzle-board-container {
     width: 100%;
-    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: visible;
 }
 
 .puzzle-title {
     text-align: center;
     margin-bottom: 10px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--accent-color);
 }
 
@@ -494,9 +489,8 @@ button {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    width: 100%;
-    max-width: 300px;
-    aspect-ratio: 1;
+    width: 300px;
+    height: 300px;
     gap: 2px;
     margin: 0 auto;
     padding: 5px;
@@ -917,7 +911,8 @@ button {
 @media (max-width: 768px) {
     /* Puzzle en móvil */
     .puzzle-pieces, .puzzle-board {
-        max-width: 280px;
+        width: 280px;
+        height: 280px;
     }
     
     .opciones-trivia {
@@ -1001,7 +996,8 @@ button {
     }
 
     .puzzle-pieces, .puzzle-board {
-        max-width: 240px;
+        width: 250px;
+        height: 250px;
     }
     
     .trivia-question {
