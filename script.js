@@ -624,10 +624,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Crear piezas
             puzzlePieces.innerHTML = '';
-            puzzlePieces.style.display = 'flex';
-            puzzlePieces.style.flexWrap = 'wrap';
-            puzzlePieces.style.gap = '10px';
-            puzzlePieces.style.justifyContent = 'center';
+           //puzzlePieces.style.display = 'flex';
+           //puzzlePieces.style.flexWrap = 'wrap';
+            //puzzlePieces.style.gap = '10px';
+            //puzzlePieces.style.justifyContent = 'center';
             puzzlePieces.style.maxWidth = `${scaledWidth}px`; // Limitar ancho máximo
             puzzlePieces.style.margin = '0 auto'; // Centrar las piezas
             

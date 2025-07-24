@@ -521,14 +521,16 @@ button {
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 5px;
+  justify-content: center;
+  margin: 0 auto;
   width: 310px;
   height: 310px;
-  background: rgba(0, 30, 0, 0.2);
-  border: 2px solid var(--accent-color);
-  border-radius: 12px;
   padding: 4px;
-  box-sizing: border-box;
+  border: 2px solid var(--accent-color);
+  border-radius: 10px;
+  background: rgba(0, 30, 0, 0.2);
 }
+
 
 .puzzle-piece {
   width: 100px;
