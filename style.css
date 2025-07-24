@@ -507,14 +507,17 @@ button {
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 5px;
-  width: 310px;
-  height: 310px;
+  width: 318px;         /* 310px + 4px padding por lado (total 8px) */
+  height: 318px;
   background: rgba(0, 30, 0, 0.2);
   border: 2px solid var(--accent-color);
   border-radius: 12px;
   padding: 4px;
   box-sizing: border-box;
+  overflow: visible;    /* Asegura que los bordes no se recorten */
+  margin: 0 auto;
 }
+
 
 .puzzle-pieces {
   display: grid;
