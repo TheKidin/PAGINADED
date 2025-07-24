@@ -465,17 +465,22 @@ button {
 }
 
 .puzzle-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 24px;
+  display: flex;
+  flex-direction: row; /* cambiar de column a row */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .puzzle-pieces-container, .puzzle-board-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .puzzle-title {
