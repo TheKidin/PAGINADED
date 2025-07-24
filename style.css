@@ -475,10 +475,12 @@ button {
   width: 100%;
   max-width: 720px;
   margin: 0 auto;
+  overflow-x: auto;
 }
 
 .puzzle-pieces-container, .puzzle-board-container {
   max-width: 340px;
+  min-width: 0;
   display: flex;
   flex: 1 1 0;
   align-items: center;
