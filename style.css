@@ -468,16 +468,15 @@ button {
 
 .puzzle-container {
   display: flex;
-  flex-direction: row; /* cambiar de column a row */
-  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: center;
   align-items: flex-start;
   gap: 30px;
-  width: 100%;
-  max-width: 100%;
+  max-width: 800px;
   margin: 0 auto;
   overflow-x: hidden;
 }
+
 
  .puzzle-board-container {
     overflow: hidden;
@@ -528,13 +527,11 @@ button {
   border: 2px solid var(--accent-color);
   border-radius: 12px;
   box-sizing: border-box;
-  margin: 0 auto;
-  padding: 2px;
 }
 
 .puzzle-pieces {
   display: grid;
-  grid-template-columns: repeat(3, 100px);
+  grid-template-columns: repeat(3, 100px); /* ← esto evitará que se apilen en vertical */
   grid-auto-rows: 100px;
   gap: 4px;
   width: 310px;
@@ -542,9 +539,8 @@ button {
   border: 2px solid var(--accent-color);
   border-radius: 12px;
   box-sizing: border-box;
-  margin: 0 auto;
-  padding: 2px;
 }
+
 
 
 .puzzle-piece {
