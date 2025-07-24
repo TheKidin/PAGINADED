@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     audioError.volume = 0.7;
     audioSuccess.volume = 0.7;
     audioClick.volume = 0.5;
-    audioEstatica.loop = true;
     audioEstatica.volume = 0.3;
+    audioEstatica.loop = true;
 
     // Reproducir audio de estática al cargar
     document.addEventListener('click', () => {
@@ -281,12 +281,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div class="puzzle-controls">
-                        <button id="btn-reiniciar-puzzle" class="btn-retro">REINICIAR</button>
-                        <div class="puzzle-counter">Piezas colocadas: <span id="piezas-colocadas">0/9</span></div>
+                        </div>
                     </div>
                 </div>`;
                 
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
                 cargarYDividirImagen(imagenAleatoria);
+                img.onerror = function() {
+                    console.error('Error al cargar la imagen');
+                    puzzlePieces.innerHTML = '<p class="error-puzzle">Error al cargar el puzzle. Intenta recargar.</p>';
+                };
                 break;
                 
             case "memoria":
@@ -578,12 +583,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function cargarYDividirImagen(imagenSrc = 'img/art-steve.jpg') {
         const puzzlePieces = document.querySelector('.puzzle-pieces');
-        const puzzleBoard = document.querySelector('.puzzle-board');
+        if (!puzzlePieces) return;
         
-        if (!puzzlePieces || !puzzleBoard) return;
-        
-        puzzlePieces.innerHTML = '';
-        puzzleBoard.innerHTML = '';
+        puzzlePieces.innerHTML = '<p>Cargando puzzle...</p>';
         
         const img = new Image();
         img.crossOrigin = "Anonymous";
@@ -591,101 +593,65 @@ document.addEventListener('DOMContentLoaded', () => {
         img.onload = function() {
             const rows = 3;
             const cols = 3;
-            const containerWidth = Math.min(window.innerWidth * 0.9, 500) - 40;
-            const pieceSize = Math.floor(containerWidth / cols);
+            const targetSize = 100;
             
-            // Configurar el tablero
-            puzzleBoard.style.display = 'grid';
-            puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-            puzzleBoard.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-            puzzleBoard.style.width = `${pieceSize * cols}px`;
-            puzzleBoard.style.height = `${pieceSize * rows}px`;
-            puzzleBoard.style.margin = '0px auto';
-            puzzleBoard.style.gap = '1px';
-            puzzleBoard.style.overflow = 'hidden';
+            const backgroundCanvas = document.createElement('canvas');
+            backgroundCanvas.width = 300;
+            backgroundCanvas.height = 300;
+            const backgroundCtx = backgroundCanvas.getContext('2d');
             
-            // Crear slots vacíos
-            for (let i = 1; i <= rows * cols; i++) {
-                const slot = document.createElement('div');
-                slot.className = 'puzzle-slot';
-                slot.dataset.pos = i;
-                puzzleBoard.appendChild(slot);
-            }
+            backgroundCtx.drawImage(img, 0, 0, backgroundCanvas.width, backgroundCanvas.height);
             
-            // Crear piezas
+            const canvas = document.createElement('canvas');
+            canvas.width = targetSize;
+            canvas.height = targetSize;
+            const ctx = canvas.getContext('2d');
+            
             puzzlePieces.innerHTML = '';
-            puzzlePieces.style.display = 'grid';
-            puzzlePieces.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-            puzzlePieces.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-            puzzlePieces.style.width = `${pieceSize * cols}px`;
-            puzzlePieces.style.height = `${pieceSize * rows}px`;
-            puzzlePieces.style.margin = '0 auto';
-            puzzlePieces.style.gap = '1px';
             
             let pieces = [];
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
                     const pos = row * cols + col + 1;
-                    const canvas = document.createElement('canvas');
-                    canvas.width = pieceSize;
-                    canvas.height = pieceSize;
-                    const ctx = canvas.getContext('2d');
+                    const pieceCanvas = document.createElement('canvas');
+                    pieceCanvas.width = targetSize;
+                    pieceCanvas.height = targetSize;
+                    const pieceCtx = pieceCanvas.getContext('2d');
                     
-                    // Dibujar la porción de imagen
-                    ctx.drawImage(
-                        img,
-                        col * pieceSize, row * pieceSize, pieceSize, pieceSize,
-                        0, 0, pieceSize, pieceSize
+                    pieceCtx.drawImage(
+                        backgroundCanvas,
+                        col * targetSize, row * targetSize, targetSize, targetSize,
+                        0, 0, targetSize, targetSize
                     );
                     
-                    const piece = document.createElement('div');
-                    piece.className = 'puzzle-piece';
-                    piece.draggable = true;
-                    piece.dataset.pos = pos;
-                    
-                    const imgPiece = document.createElement('img');
-                    imgPiece.src = canvas.toDataURL();
-                    imgPiece.style.width = '100%';
-                    imgPiece.style.height = '100%';
-                    imgPiece.style.objectFit = 'cover';
-                    imgPiece.draggable = false; // Evitar arrastre de la imagen
-                    
-                    piece.appendChild(imgPiece);
-                    pieces.push(piece);
+                    pieces.push({
+                        pos: pos,
+                        src: pieceCanvas.toDataURL()
+                    });
                 }
             }
             
-            // Mezclar piezas
             pieces = pieces.sort(() => Math.random() - 0.5);
-            pieces.forEach(piece => puzzlePieces.appendChild(piece));
             
+            pieces.forEach(piece => {
+                const pieceElement = document.createElement('img');
+                pieceElement.src = piece.src;
+                pieceElement.className = 'puzzle-piece';
+                pieceElement.draggable = true;
+                pieceElement.dataset.pos = piece.pos;
+                pieceElement.alt = `Pieza ${piece.pos}`;
+                puzzlePieces.appendChild(pieceElement);
+            });
+            
+            actualizarTableroPuzzle(rows, cols);
             setupPuzzle();
         };
         
         img.onerror = function() {
-            console.error('Error al cargar la imagen del puzzle');
+            console.error('Error al cargar la imagen');
             puzzlePieces.innerHTML = '';
+            const textParts = ['ETH', 'ERN', 'ITY', 'STU', 'DIO', ':::','>>>','<<<','^^^'];
             
-            // Fallback con piezas de texto
-            const pieceSize = Math.min(window.innerWidth * 0.2, 100); // 20% del ancho o máximo 100px
-            const textParts = ['PIE', 'ZAS', 'DEL', 'PUI', 'ZZL', 'E!!', 'INT', 'ENT', 'A!!'];
-            
-            // Configurar el tablero para el fallback
-            puzzleBoard.style.display = 'grid';
-            puzzleBoard.style.gridTemplateColumns = 'repeat(3, 1fr)';
-            puzzleBoard.style.gridTemplateRows = 'repeat(3, 1fr)';
-            puzzleBoard.style.width = `${pieceSize * 3}px`;
-            puzzleBoard.style.height = `${pieceSize * 3}px`;
-            puzzleBoard.style.margin = '0 auto';
-            
-            for (let i = 1; i <= 9; i++) {
-                const slot = document.createElement('div');
-                slot.className = 'puzzle-slot';
-                slot.dataset.pos = i;
-                puzzleBoard.appendChild(slot);
-            }
-            
-            // Crear piezas de texto
             for (let i = 0; i < 9; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
@@ -695,138 +661,101 @@ document.addEventListener('DOMContentLoaded', () => {
                 piece.style.display = 'flex';
                 piece.style.justifyContent = 'center';
                 piece.style.alignItems = 'center';
-                piece.style.fontSize = '16px';
+                piece.style.fontSize = '24px';
                 piece.style.color = '#0f0';
-                piece.style.border = '1px solid #0f0';
-                piece.style.width = `${pieceSize}px`;
-                piece.style.height = `${pieceSize}px`;
                 puzzlePieces.appendChild(piece);
             }
             
+            actualizarTableroPuzzle(3, 3);
             setupPuzzle();
         };
         
         img.src = imagenSrc;
     }
 
+    function actualizarTableroPuzzle(rows, cols) {
+        const puzzleBoard = document.querySelector('.puzzle-board');
+        if (!puzzleBoard) return;
+        
+        puzzleBoard.innerHTML = '';
+        puzzleBoard.style.display = 'grid';
+        puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, 100px)`;
+        puzzleBoard.style.gridTemplateRows = `repeat(${rows}, 100px)`;
+        puzzleBoard.style.gap = '5px';
+        
+        for (let i = 1; i <= rows * cols; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'puzzle-slot';
+            slot.dataset.pos = i;
+            puzzleBoard.appendChild(slot);
+        }
+    }
+
     function setupPuzzle() {
         const pieces = document.querySelectorAll('.puzzle-piece');
         const slots = document.querySelectorAll('.puzzle-slot');
-        const puzzlePiecesContainer = document.querySelector('.puzzle-pieces');
-        const piezasColocadasElement = document.getElementById('piezas-colocadas');
+        const piezasColocadas = document.getElementById('piezas-colocadas');
         
         if (!pieces.length || !slots.length) return;
         
         const totalPiezas = pieces.length;
         let colocadas = 0;
         let activePiece = null;
-        let touchStartX, touchStartY;
-        let pieceStartX, pieceStartY;
+        let touchOffset = { x: 0, y: 0 };
 
-        // Configurar eventos para móviles
+        // Eventos táctiles para móviles
         pieces.forEach(piece => {
-            // Eventos táctiles mejorados
+            // Ratón (desktop)
+            piece.addEventListener('dragstart', function(e) {
+                e.dataTransfer.setData('text/plain', this.dataset.pos);
+            });
+
+            // Touch (móvil)
             piece.addEventListener('touchstart', function(e) {
-                e.preventDefault();
                 const touch = e.touches[0];
-                activePiece = this;
-                
-                // Guardar posición inicial
-                touchStartX = touch.clientX;
-                touchStartY = touch.clientY;
-                const rect = this.getBoundingClientRect();
-                pieceStartX = rect.left;
-                pieceStartY = rect.top;
-                
-                // Estilo para el arrastre
-                this.style.position = 'fixed';
-                this.style.zIndex = '1000';
-                this.style.left = `${touch.clientX - this.offsetWidth/2}px`;
-                this.style.top = `${touch.clientY - this.offsetHeight/2}px`;
-                this.style.transition = 'none';
-                this.style.transform = 'scale(1.1)';
+                piece.dataset.dragging = 'true';
+                piece.style.position = 'absolute';
+                piece.style.left = `${touch.clientX - 50}px`;
+                piece.style.top = `${touch.clientY - 50}px`;
+                e.preventDefault();
             });
 
             piece.addEventListener('touchmove', function(e) {
-                if (activePiece === this) {
-                    e.preventDefault();
+                if (piece.dataset.dragging === 'true') {
                     const touch = e.touches[0];
-                    this.style.left = `${touch.clientX - this.offsetWidth/2}px`;
-                    this.style.top = `${touch.clientY - this.offsetHeight/2}px`;
+                    piece.style.left = `${touch.clientX - 50}px`;
+                    piece.style.top = `${touch.clientY - 50}px`;
+                    e.preventDefault();
                 }
             });
 
             piece.addEventListener('touchend', function(e) {
-                if (activePiece === this) {
-                    e.preventDefault();
+                if (piece.dataset.dragging === 'true') {
                     const touch = e.changedTouches[0];
-                    const elementoDestino = document.elementFromPoint(touch.clientX, touch.clientY);
+                    const slot = document.elementFromPoint(touch.clientX, touch.clientY);
                     
-                    // Restaurar estilos
-                    this.style.position = '';
-                    this.style.zIndex = '';
-                    this.style.transform = '';
-                    
-                    // Verificar si se soltó sobre un slot
-                    if (elementoDestino && elementoDestino.classList.contains('puzzle-slot')) {
-                        const slot = elementoDestino;
-                        
-                        // Verificar si es el slot correcto
-                        if (this.dataset.pos === slot.dataset.pos) {
-                            // Si ya hay una pieza en este slot, la devolvemos al contenedor
-                            if (slot.firstChild) {
-                                puzzlePiecesContainer.appendChild(slot.firstChild);
-                                colocadas--;
-                            }
-                            
-                            // Colocamos la nueva pieza
-                            slot.appendChild(this);
-                            colocadas++;
-                            
-                            // Actualizar contador
-                            if (piezasColocadasElement) {
-                                piezasColocadasElement.textContent = `${colocadas}/${totalPiezas}`;
-                            }
-                            
-                            // Reproducir sonido de éxito
-                            audioSuccess.currentTime = 0;
-                            audioSuccess.play();
-                            
-                            // Verificar si se completó el puzzle
-                            if (colocadas === totalPiezas) {
-                                setTimeout(mostrarRecompensa, 1000);
-                            }
-                        } else {
-                            // Devolver a la posición original si no es el slot correcto
-                            this.style.position = 'absolute';
-                            this.style.left = `${pieceStartX}px`;
-                            this.style.top = `${pieceStartY}px`;
-                            
-                            // Reproducir sonido de error
-                            audioError.currentTime = 0;
-                            audioError.play();
-                            
-                            // Efecto visual de error
-                            slot.classList.add('incorrect');
-                            setTimeout(() => slot.classList.remove('incorrect'), 500);
-                        }
+                    if (slot && slot.classList.contains('puzzle-slot') && piece.dataset.pos === slot.dataset.pos) {
+                        slot.appendChild(piece);
+                        piece.style.position = 'static';
+                        colocadas++;
+                        if (colocadas === totalPiezas) mostrarRecompensa();
                     } else {
-                        // Devolver a la posición original si no se soltó sobre un slot
-                        this.style.position = 'absolute';
-                        this.style.left = `${pieceStartX}px`;
-                        this.style.top = `${pieceStartY}px`;
+                        piece.style.position = 'static';
                     }
-                    
-                    activePiece = null;
+                    piece.dataset.dragging = 'false';
                 }
             });
         });
 
-        // Configurar eventos para desktop (ratón)
+        // Inicializar el contador si existe
+        if (piezasColocadas) {
+            piezasColocadas.textContent = `0/${totalPiezas}`;
+        }
+
         pieces.forEach(piece => {
             piece.addEventListener('dragstart', function(e) {
                 audioClick.currentTime = 0;
-                audioClick.play();
+                audioClick.play().catch(e => console.log('Error al reproducir click'));
                 e.dataTransfer.setData('text/plain', this.dataset.pos);
                 this.classList.add('dragging');
             });
@@ -857,27 +786,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (piecePos === this.dataset.pos) {
                     audioSuccess.currentTime = 0;
-                    audioSuccess.play();
+                    audioSuccess.play().catch(e => console.log('Error al reproducir audio de éxito'));
                     
                     // Si ya hay una pieza en este slot, la removemos
                     if (this.firstChild) {
                         const existingPiece = this.firstChild;
                         existingPiece.classList.remove('placed');
                         existingPiece.draggable = true;
-                        puzzlePiecesContainer.appendChild(existingPiece);
+                        existingPiece.style.width = '';
+                        existingPiece.style.height = '';
+                        document.querySelector('.puzzle-pieces').appendChild(existingPiece);
                         colocadas--;
                     }
                     
                     // Colocamos la nueva pieza
                     draggedPiece.classList.add('placed');
                     draggedPiece.draggable = false;
+                    draggedPiece.style.width = '100%';
+                    draggedPiece.style.height = '100%';
                     this.appendChild(draggedPiece);
                     
                     colocadas++;
-                    
-                    // Actualizar contador
-                    if (piezasColocadasElement) {
-                        piezasColocadasElement.textContent = `${colocadas}/${totalPiezas}`;
+                    if (piezasColocadas) {
+                        piezasColocadas.textContent = `${colocadas}/${totalPiezas}`;
                     }
                     
                     if (colocadas === totalPiezas) {
@@ -885,7 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     audioError.currentTime = 0;
-                    audioError.play();
+                    audioError.play().catch(e => console.log('Error al reproducir audio de error'));
                     this.classList.add('incorrect');
                     setTimeout(() => {
                         this.classList.remove('incorrect');
@@ -894,31 +825,30 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Botón de reinicio
-        document.getElementById('btn-reiniciar-puzzle')?.addEventListener('click', () => {
+        btnReiniciar.addEventListener('click', () => {
             audioClick.currentTime = 0;
-            audioClick.play();
+            audioClick.play().catch(e => console.log('Error al reproducir click'));
             
             slots.forEach(slot => {
                 while (slot.firstChild) {
                     const piece = slot.firstChild;
                     piece.classList.remove('placed');
                     piece.draggable = true;
-                    puzzlePiecesContainer.appendChild(piece);
+                    piece.style.width = '';
+                    piece.style.height = '';
+                    document.querySelector('.puzzle-pieces').appendChild(piece);
                 }
             });
             
             colocadas = 0;
+            piezasColocadas.textContent = `0/${totalPiezas}`;
             
-            // Actualizar contador
-            if (piezasColocadasElement) {
-                piezasColocadasElement.textContent = `0/${totalPiezas}`;
+            const piecesContainer = document.querySelector('.puzzle-pieces');
+            if (piecesContainer) {
+                const piecesArray = Array.from(piecesContainer.children);
+                piecesArray.sort(() => Math.random() - 0.5);
+                piecesArray.forEach(piece => piecesContainer.appendChild(piece));
             }
-            
-            // Mezclar las piezas
-            const piecesArray = Array.from(pieces);
-            piecesArray.sort(() => Math.random() - 0.5);
-            piecesArray.forEach(piece => puzzlePiecesContainer.appendChild(piece));
         });
     }
     
@@ -1038,7 +968,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Limpiar el grid antes de comenzar
+        // Crear la cuadrícula 9x9
         grid.innerHTML = '';
         grid.style.display = 'grid';
         grid.style.gridTemplateColumns = 'repeat(9, 1fr)';
@@ -1048,48 +978,24 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let selectedCell = null;
         let errores = 0;
-        let startTime = new Date();
+        let startTime = null;
         let timerInterval = null;
         let board = generateSudokuBoard();
         let initialBoard = JSON.parse(JSON.stringify(board));
         
-        // Crear las celdas del Sudoku
+        // Inicializar el tablero
         for (let row = 0; row < 9; row++) {
             for (let col = 0; col < 9; col++) {
                 const cell = document.createElement('input');
-                cell.type = 'text';
+                cell.type = 'number';
                 cell.inputMode = 'numeric';
-                cell.maxLength = 1;
+                cell.min = '1';
+                cell.max = '9';
+                cell.textContent = board[row][col] === 0 ? '' : board[row][col];
+                grid.appendChild(cell);
                 cell.className = 'sudoku-cell';
                 cell.dataset.row = row;
                 cell.dataset.col = col;
-                
-                // Establecer el valor inicial si no es cero
-                if (board[row][col] !== 0) {
-                    cell.value = board[row][col];
-                    cell.classList.add('fixed');
-                    cell.readOnly = true;
-                } else {
-                    cell.addEventListener('focus', () => {
-                        if (selectedCell) selectedCell.classList.remove('selected');
-                        selectedCell = cell;
-                        cell.classList.add('selected');
-                    });
-                    
-                    cell.addEventListener('input', (e) => {
-                        // Solo permitir números del 1 al 9
-                        const value = e.target.value;
-                        if (/^[1-9]$/.test(value)) {
-                            board[row][col] = parseInt(value);
-                            audioClick.play();
-                            checkBoard();
-                        } else if (value === '') {
-                            board[row][col] = 0;
-                        } else {
-                            e.target.value = '';
-                        }
-                    });
-                }
                 
                 // Añadir bordes más gruesos para los cuadrantes 3x3
                 if (row % 3 === 0) cell.style.borderTop = '2px solid #0f0';
@@ -1097,22 +1003,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (row === 8) cell.style.borderBottom = '2px solid #0f0';
                 if (col === 8) cell.style.borderRight = '2px solid #0f0';
                 
+                if (board[row][col] !== 0) {
+                    cell.textContent = board[row][col];
+                    cell.classList.add('fixed');
+                } else {
+                    cell.tabIndex = 0; // Hacer la celda enfocable
+                    cell.addEventListener('click', () => {
+                        audioClick.currentTime = 0;
+                        audioClick.play().catch(e => console.log('Error al reproducir click'));
+                        if (selectedCell) selectedCell.classList.remove('selected');
+                        selectedCell = cell;
+                        cell.classList.add('selected');
+                        cell.focus();
+                    });
+                    
+                    // Manejar entrada por teclado
+                    cell.addEventListener('input', (e) => {
+                        // Solo permitir números del 1 al 9
+                        if (e.key >= '1' && e.key <= '9') {
+                            audioClick.currentTime = 0;
+                            audioClick.play().catch(e => console.log('Error al reproducir click'));
+                            cell.textContent = e.key;
+                            board[row][col] = parseInt(e.key);
+                            checkBoard();
+                        } 
+                        // Permitir borrar con Backspace o Delete
+                        else if (e.key === 'Backspace' || e.key === 'Delete') {
+                            audioClick.currentTime = 0;
+                            audioClick.play().catch(e => console.log('Error al reproducir click'));
+                            cell.textContent = '';
+                            board[row][col] = 0;
+                            checkBoard();
+                        }
+                        // Prevenir entrada de otros caracteres
+                        else if (e.key.length === 1) {
+                            e.preventDefault();
+                        }
+                    });
+                }
+                
                 grid.appendChild(cell);
             }
         }
         
         // Iniciar temporizador
-        timerInterval = setInterval(() => {
-            const now = new Date();
-            const elapsed = Math.floor((now - startTime) / 1000);
-            const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
-            const seconds = (elapsed % 60).toString().padStart(2, '0');
-            tiempoElement.textContent = `${minutes}:${seconds}`;
-        }, 1000);
+        startTime = new Date();
+        timerInterval = setInterval(updateTimer, 1000);
         
         // Botón de verificación
         btnVerificar.addEventListener('click', () => {
-            audioClick.play();
+            audioClick.currentTime = 0;
+            audioClick.play().catch(e => console.log('Error al reproducir click'));
             
             if (isBoardComplete()) {
                 if (isBoardValid()) {
@@ -1121,7 +1062,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     errores++;
                     contadorErrores.textContent = errores;
-                    audioError.play();
+                    audioError.currentTime = 0;
+                    audioError.play().catch(e => console.log('Error al reproducir audio de error'));
                     alert("Hay errores en el tablero. Revisa tus números.");
                 }
             } else {
@@ -1131,27 +1073,34 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Botón de reinicio
         btnReiniciar.addEventListener('click', () => {
-            audioClick.play();
+            audioClick.currentTime = 0;
+            audioClick.play().catch(e => console.log('Error al reproducir click'));
+            
             clearInterval(timerInterval);
-            
-            // Resetear el tablero
-            const cells = document.querySelectorAll('.sudoku-cell');
-            cells.forEach(cell => {
-                const row = cell.dataset.row;
-                const col = cell.dataset.col;
-                
-                if (!cell.classList.contains('fixed')) {
-                    cell.value = '';
-                    board[row][col] = 0;
-                    cell.classList.remove('error');
-                }
-            });
-            
+            board = JSON.parse(JSON.stringify(initialBoard));
+            renderBoard();
             errores = 0;
             contadorErrores.textContent = '0';
             startTime = new Date();
             timerInterval = setInterval(updateTimer, 1000);
         });
+        
+        function updateTimer() {
+            const now = new Date();
+            const elapsed = new Date(now - startTime);
+            const minutes = elapsed.getMinutes().toString().padStart(2, '0');
+            const seconds = elapsed.getSeconds().toString().padStart(2, '0');
+            tiempoElement.textContent = `${minutes}:${seconds}`;
+        }
+        
+        function renderBoard() {
+            const cells = document.querySelectorAll('.sudoku-cell');
+            cells.forEach(cell => {
+                const row = cell.dataset.row;
+                const col = cell.dataset.col;
+                cell.textContent = board[row][col] === 0 ? '' : board[row][col];
+            });
+        }
         
         function checkBoard() {
             const cells = document.querySelectorAll('.sudoku-cell');
@@ -1171,7 +1120,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             if (tieneErrores) {
-                audioError.play();
+                audioError.currentTime = 0;
+                audioError.play().catch(e => console.log('Error al reproducir audio de error'));
             }
         }
         
@@ -1189,14 +1139,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             return true;
-        }
-        
-        function updateTimer() {
-            const now = new Date();
-            const elapsed = Math.floor((now - startTime) / 1000);
-            const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
-            const seconds = (elapsed % 60).toString().padStart(2, '0');
-            tiempoElement.textContent = `${minutes}:${seconds}`;
         }
     }
 
@@ -1404,15 +1346,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 3000);
         });
-    });
-
-    // Añadir event listener para redimensionamiento
-    window.addEventListener('resize', function() {
-        if (juegoActual === 'rompecabezas') {
-            const imgSrc = document.querySelector('.puzzle-pieces img')?.src;
-            if (imgSrc) {
-                cargarYDividirImagen(imgSrc);
-            }
-        }
     });
 });
