@@ -960,52 +960,44 @@ button {
 }
 
 /* ==================== RESPONSIVE ==================== */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .screen {
         padding: 6px !important;
         max-width: 100vw !important;
         width: 100vw !important;
     }
 
-    @media (max-width: 768px) {
-  .puzzle-piece {
-    position: absolute;
-    z-index: 10;
-    transition: transform 0.1s ease;
-  }
-}
+    .game-section,
+    .puzzle-container {
+        flex-direction: column !important;
+        align-items: center !important;
+    }
 
-    .puzzle-area,
+    .puzzle-area {
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100%;
+    }
+
     .puzzle-pieces,
     .puzzle-board {
-        max-width: 98vw !important;
-        width: 98vw !important;
+        max-width: 90vw !important;
+        width: 90vw !important;
         min-width: 0 !important;
+        height: auto !important;
+        gap: 6px;
+        justify-content: center;
     }
+
     .puzzle-title {
         font-size: 1rem;
-    }
-     .puzzle-controls {
-        flex-direction: column;
-        gap: 10px;
+        text-align: center;
     }
 
-    @media (max-width: 768px) {
-    .game-section {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .puzzle-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .puzzle-pieces,
-    .puzzle-board {
-        max-width: 90vw;
-        height: auto;
-        gap: 4px;
+    .puzzle-piece {
+        position: absolute !important;
+        z-index: 10;
+        transition: transform 0.1s ease;
     }
 
     .puzzle-piece img {
@@ -1014,11 +1006,22 @@ button {
         object-fit: cover;
     }
 
+    .puzzle-slot {
+        width: 100%;
+        height: auto;
+    }
+
+    .puzzle-controls {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        margin-top: 12px;
+    }
+
     .reiniciar-container {
         margin-top: 12px;
         align-self: center;
     }
-}
     
     .opciones-trivia {
         grid-template-columns: 1fr;
