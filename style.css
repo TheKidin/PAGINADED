@@ -485,6 +485,11 @@ button {
     color: var(--accent-color);
 }
 
+.puzzle-pieces {
+  position: relative;
+}
+
+
 .puzzle-pieces, .puzzle-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

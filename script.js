@@ -752,10 +752,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 pieceStartY = rect.top;
                 
                 // Estilo para el arrastre
-                this.style.position = 'fixed';
+                this.style.position = '';
                 this.style.zIndex = '1000';
-                this.style.left = `${touch.clientX - this.offsetWidth/2}px`;
-                this.style.top = `${touch.clientY - this.offsetHeight/2}px`;
+                this.style.left = '';
+                this.style.top = '';
                 this.style.transition = 'none';
                 this.style.transform = 'scale(1.1)';
             });
