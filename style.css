@@ -476,6 +476,12 @@ button {
   margin: 0 auto;
 }
 
+.puzzle-board {
+  max-width: 480px;
+  max-height: 480px;
+  aspect-ratio: 1 / 1;
+}
+
 .puzzle-pieces-container, .puzzle-board-container {
   width: auto;
   display: flex;
