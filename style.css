@@ -489,14 +489,14 @@ button {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    width: 300px;
-    height: 300px;
     gap: 2px;
     margin: 0 auto;
     padding: 5px;
     background: rgba(0, 30, 0, 0.2);
     border: 2px solid var(--accent-color);
     border-radius: 8px;
+    width: 100%;
+    
 }
 
 .puzzle-piece {

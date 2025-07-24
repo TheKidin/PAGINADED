@@ -601,6 +601,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const cols = 3;
             const pieceWidth = Math.floor(scaledWidth / cols);
             const pieceHeight = Math.floor(scaledHeight / rows);
+            // Ajustar el tablero al tamaño calculado
+            puzzleBoard.style.width  = `${scaledWidth}px`;
+            puzzleBoard.style.height = `${scaledHeight}px`;
+
             
             // Ajustar tamaño del tablero
             puzzleBoard.style.display = 'grid';
