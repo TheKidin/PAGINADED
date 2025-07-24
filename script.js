@@ -600,8 +600,9 @@ document.addEventListener('DOMContentLoaded', () => {
             puzzleBoard.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
             puzzleBoard.style.width = `${pieceSize * cols}px`;
             puzzleBoard.style.height = `${pieceSize * rows}px`;
-            puzzleBoard.style.margin = '20px auto';
-            puzzleBoard.style.gap = '2px';
+            puzzleBoard.style.margin = '0px auto';
+            puzzleBoard.style.gap = '1px';
+            puzzleBoard.style.overflow = 'hidden';
             
             // Crear slots vacíos
             for (let i = 1; i <= rows * cols; i++) {
@@ -612,13 +613,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Crear piezas
+            puzzlePieces.innerHTML = '';
             puzzlePieces.style.display = 'grid';
             puzzlePieces.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             puzzlePieces.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
             puzzlePieces.style.width = `${pieceSize * cols}px`;
             puzzlePieces.style.height = `${pieceSize * rows}px`;
             puzzlePieces.style.margin = '0 auto';
-            puzzlePieces.style.gap = '2px';
+            puzzlePieces.style.gap = '1px';
             
             let pieces = [];
             for (let row = 0; row < rows; row++) {
@@ -646,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     imgPiece.style.width = '100%';
                     imgPiece.style.height = '100%';
                     imgPiece.style.objectFit = 'cover';
-                    imgPiece.alt = `Pieza ${pos}`;
+                    imgPiece.draggable = false; // Evitar arrastre de la imagen
                     
                     piece.appendChild(imgPiece);
                     pieces.push(piece);
@@ -693,7 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 piece.style.display = 'flex';
                 piece.style.justifyContent = 'center';
                 piece.style.alignItems = 'center';
-                piece.style.fontSize = '24px';
+                piece.style.fontSize = '16px';
                 piece.style.color = '#0f0';
                 piece.style.border = '1px solid #0f0';
                 piece.style.width = `${pieceSize}px`;
