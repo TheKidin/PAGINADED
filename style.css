@@ -583,13 +583,14 @@ button {
 }
 
 .puzzle-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    margin-top: 15px;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  width: 100%;
+  gap: 10px;
 }
+
 
 .puzzle-counter {
     font-size: 1.2rem;
