@@ -281,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div class="puzzle-controls">
+                        <button id="btn-reiniciar-puzzle" class="btn-retro">REINICIAR</button>
                         <div class="puzzle-counter">Piezas colocadas: <span id="piezas-colocadas">0/9</span></div>
                     </div>
                 </div>`;
@@ -589,7 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         img.onload = function() {
             // Definir tamaño máximo para el puzzle
-            const maxPuzzleSize = Math.min(window.innerWidth * 0.95, 450); // <= 340px siempre
+            const maxPuzzleSize = Math.min(window.innerWidth * 0.95, 420); // <= 340px siempre
             // Calcular proporciones
             const ratio = Math.min(1, Math.min(maxPuzzleSize / img.width, maxPuzzleSize / img.height));
             const scaledWidth = img.width * ratio;
@@ -623,6 +624,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Crear piezas
             puzzlePieces.innerHTML = '';
+           //puzzlePieces.style.display = 'flex';
+           //puzzlePieces.style.flexWrap = 'wrap';
+            //puzzlePieces.style.gap = '10px';
+            //puzzlePieces.style.justifyContent = 'center';
             puzzlePieces.style.maxWidth = `${scaledWidth}px`; // Limitar ancho máximo
             puzzlePieces.style.margin = '0 auto'; // Centrar las piezas
             
@@ -898,6 +903,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 500);
                 }
             });
+        });
+
+        // Botón de reinicio
+        document.getElementById('btn-reiniciar-puzzle')?.addEventListener('click', () => {
+            audioClick.currentTime = 0;
+            audioClick.play();
+            
+            slots.forEach(slot => {
+                while (slot.firstChild) {
+                    const piece = slot.firstChild;
+                    piece.classList.remove('placed');
+                    piece.draggable = true;
+                    puzzlePiecesContainer.appendChild(piece);
+                }
+            });
+            
+            colocadas = 0;
+            
+            // Actualizar contador
+            if (piezasColocadasElement) {
+                piezasColocadasElement.textContent = `0/${totalPiezas}`;
+            }
+            
+            // Mezclar las piezas
+            const piecesArray = Array.from(pieces);
+            piecesArray.sort(() => Math.random() - 0.5);
+            piecesArray.forEach(piece => puzzlePiecesContainer.appendChild(piece));
         });
     }
     
