@@ -524,7 +524,7 @@ button {
     gap: 4px;
     width: 100%;
     max-width: 340px;
-    height: 340px; /* Altura fija */
+    height: 100%; /* Altura fija */
     margin: 0 auto;
     padding: 2px;
     background: rgba(0, 30, 0, 0.2);
@@ -601,6 +601,17 @@ button {
   display: block;
   border-radius: 4px;
   object-fit: contain;
+}
+
+.puzzle-pieces-container,
+.puzzle-board-container {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    max-height: 340px;
+    overflow: hidden;
 }
 
 /* ==================== SUDOKU ==================== */
