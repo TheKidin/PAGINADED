@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
          `<div class="discord-link">
         <p>Solo los observadores sabrán a dónde ir...</p>
         <a href="https://discord.gg/dedsafioo" class="discord-button" target="_blank">ACCESO CRUEL</a>
-
     </div>`
     ];
 
