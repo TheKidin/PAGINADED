@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
 
     const lineas = [
-        `Estimado(a) <span class="neon-text">\${nombre}</span>:`,
+        `Estimado(a) <span class="neon-text">${nombre}</span>:`,
         `<strong>Felicitaciones.</strong>`,
         `Has logrado resolver el acertijo, y eso dice mucho de ti. Tu mente es rápida, adaptable... útil.`,
         `Ahora formas parte de algo más grande. A partir de este momento, tu vida cambiará. Lo que conocías ya no importa. Solo queda avanzar, cumplir, sobrevivir.`,
@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
         `<div class="discord-link">
             <p>Solo los observadores sabrán a dónde ir...</p>
             <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-icon-link" aria-label="Acceso Discord">
-                <i class="fa-brands fa-discord"></i>
             </a>
         </div>`
     ];
