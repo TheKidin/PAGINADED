@@ -519,9 +519,8 @@ button {
 
 .puzzle-pieces {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 5px;
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 150px);
     width: 468px;
     height: 468px;
     border: 2px solid var(--accent-color);
@@ -529,6 +528,7 @@ button {
     padding: 4px;
     box-sizing: border-box;
 }
+
 
 
 .puzzle-piece {
