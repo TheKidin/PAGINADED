@@ -1309,22 +1309,37 @@ input, button, .numero, .puzzle-piece {
         position: fixed !important;
     }
 }
-}
+   }
 @media (max-width: 768px) {
-  .memory-grid {
+  .memoria-grid {
     grid-template-columns: repeat(3, 1fr); /* 3 columnas */
-    max-width: 90vw;
+    gap: 10px;
+    max-width: 95vw;
     margin: 0 auto;
   }
 
-  .memory-card {
+  .carta-memoria {
+    max-width: 80px;
+    height: auto;
     aspect-ratio: 1 / 1;
-    font-size: 1.8rem;
   }
 
-  .memory-header h2,
-  .memory-header p,
-  .memory-stats {
+  .frontal::before {
+    font-size: 1.4rem;
+  }
+
+  .trasera {
+    font-size: 1.4rem;
+  }
+
+  .trasera img {
+    max-width: 70%;
+    max-height: 70%;
+  }
+
+  .memoria-header h2,
+  .memoria-header p,
+  .memoria-stats {
     text-align: center;
     font-size: 1.2rem;
   }
@@ -1334,6 +1349,7 @@ input, button, .numero, .puzzle-piece {
     margin: 1rem auto;
   }
 }
+
 
 /* NUEVO: Estilo para el botón de memorama */
 .memory-button {
