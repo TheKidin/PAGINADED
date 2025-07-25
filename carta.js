@@ -1,4 +1,3 @@
-// CARTA-DEFINITIVA-SIN-BOTON.js
 document.addEventListener('DOMContentLoaded', function() {
     document.body.innerHTML = '';
 
@@ -35,8 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="cruel-logo">C.R.U.E.L.</p>
         </div>`,
         `<div class="discord-link">
-            <p>Solo los observadores sabrán a dónde ir...</p>
-            <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-icon-link" aria-label="Acceso Discord">
+            <p class="mensaje-desafio">¿Te atreves a entrar a la siguiente prueba?</p>
+            <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-button">
+                <i class="fa-brands fa-discord"></i> ENTRAR AHORA
             </a>
         </div>`
     ];
@@ -67,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
         typeSound.loop = true;
 
         for (const linea of lineas) {
-            const esDiscord = linea.includes('discord-icon-link');
-            const lineaElem = document.createElement(esDiscord ? 'div' : 'p');
+            const esBloque = linea.includes('discord-link') || linea.includes('firma');
+            const lineaElem = document.createElement(esBloque ? 'div' : 'p');
             contenido.appendChild(lineaElem);
 
             if (linea.trim() === '') {
@@ -201,26 +201,38 @@ document.addEventListener('DOMContentLoaded', function() {
             text-align: center;
             margin-top: 30px;
         }
-        .discord-icon-link {
-            font-size: 2.8rem;
+        .mensaje-desafio {
+            font-size: 1.2rem;
+            font-family: 'Courier New', monospace;
             color: #c00;
-            text-decoration: none;
+            margin-bottom: 12px;
+            text-shadow: 0 0 5px #c00, 0 0 10px #c00;
+            text-align: center;
+        }
+        .discord-button {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 50%;
-            transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
+            gap: 10px;
+            background-color: transparent;
+            color: #c00;
+            border: 2px solid #c00;
+            padding: 10px 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            text-decoration: none;
             box-shadow: 0 0 10px #c00;
-            background-color: rgba(255, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .discord-icon-link:hover {
-            color: #fff;
+        .discord-button:hover {
             background-color: #c00;
-            transform: scale(1.2);
-            box-shadow: 0 0 15px #f00, 0 0 30px #f00;
+            color: #000;
+            box-shadow: 0 0 20px #f00;
+            transform: scale(1.05);
+        }
+        .discord-button i {
+            font-size: 1.5rem;
         }
     `;
     document.head.appendChild(style);
