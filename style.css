@@ -1427,4 +1427,24 @@ input, button, .numero, .puzzle-piece {
     box-shadow: 0 0 20px #f00;
 }
 
+.discord-secret-link {
+    font-family: var(--font-secondary);
+    font-size: 2rem;
+    letter-spacing: 4px;
+    color: var(--neon-red);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    text-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red);
+    transition: transform 0.2s ease, text-shadow 0.3s ease;
+    cursor: pointer;
+    z-index: 1000;
+    position: relative;
+}
+
+.discord-secret-link:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+}
+
 
