@@ -587,17 +587,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         img.onload = function() {
             // Definir tamaño máximo para el puzzle
-            const maxPuzzleSize = 450; // <= 340px siempre
-            // Calcular proporciones
-            const ratio = Math.min(1, Math.min(maxPuzzleSize / img.width, maxPuzzleSize / img.height));
-            const scaledWidth = img.width * ratio;
-            const scaledHeight = img.height * ratio;
-            
+            const boardSize = 450;
             const rows = 3;
             const cols = 3;
-            const pieceWidth = Math.floor(scaledWidth / cols);
-            const pieceHeight = Math.floor(scaledHeight / rows);
-            // Ajustar el tablero al tamaño calculado
+            const pieceWidth = Math.floor(boardSize / cols);
+            const pieceHeight = Math.floor(boardSize / rows);
             puzzleBoard.style.width  = `${scaledWidth}px`;
             puzzleBoard.style.height = `${scaledHeight}px`;
 
@@ -607,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
             puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, ${pieceWidth}px)`;
             puzzleBoard.style.gridTemplateRows = `repeat(${rows}, ${pieceHeight}px)`;
             puzzleBoard.style.gap = '2px';
-            puzzleBoard.style.margin = '0 auto'; // Centrar el tablero
+            puzzleBoard.style.margin = '0 auto'; // Centrado
             
             // Crear slots vacíos
             for (let i = 1; i <= rows * cols; i++) {
@@ -621,11 +615,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Crear piezas
             puzzlePieces.innerHTML = '';
-           //puzzlePieces.style.display = 'flex';
-           //puzzlePieces.style.flexWrap = 'wrap';
-            //puzzlePieces.style.gap = '10px';
-            //puzzlePieces.style.justifyContent = 'center';
-            puzzlePieces.style.maxWidth = `${scaledWidth}px`; // Limitar ancho máximo
+            puzzlePieces.style.width = `${boardSize}px`;
+            puzzlePieces.style.height = `${boardSize}px`;
             puzzlePieces.style.margin = '0 auto'; // Centrar las piezas
             
             let pieces = [];
