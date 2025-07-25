@@ -35,12 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="cruel-logo">C.R.U.E.L.</p>
         </div>`,
         `<div class="discord-link">
-        <p class="mensaje-desafio">¿Te atreves a entrar a la siguiente prueba?</p>
-        <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-button" aria-label="Entrar a la siguiente prueba">
-         ENTRAR AHORA
-    </a>
-</div>
-`
+            <p>Solo los observadores sabrán a dónde ir...</p>
+            <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-icon-link" aria-label="Acceso Discord">
+            </a>
+        </div>`
     ];
 
     const typeSound = document.getElementById('type-sound');
