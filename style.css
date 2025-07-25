@@ -1400,3 +1400,24 @@ input, button, .numero, .puzzle-piece {
     right: 15px;
   }
 }
+.discord-link {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 1em;
+}
+
+.discord-link a {
+    color: #c00;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.discord-icon {
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+}
+

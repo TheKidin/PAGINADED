@@ -37,7 +37,14 @@ document.addEventListener('DOMContentLoaded', function() {
             <p><span class="neon-text">Ava Paige</span></p>
             <p>Directora de Operaciones</p>
             <p class="cruel-logo">C.R.U.E.L.</p>
-        </div>`
+        </div>`,
+         `<div class="discord-link">
+        <p>Únete a nuestro grupo de discusión:</p>
+        <a href="https://discord.gg/LOQUESEA" target="_blank">
+            <img src="https://cdn.jsdelivr.net/gh/encharm/Font-Awesome-SVG-PNG@master/black/png/64/discord.png" alt="Discord" class="discord-icon">
+            discord.gg/LOQUESEA
+        </a>
+    </div>`
     ];
 
     // 5. Configuración de audio
