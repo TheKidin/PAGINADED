@@ -1302,5 +1302,33 @@ input, button, .numero, .puzzle-piece {
         position: fixed !important;
     }
 }
+
+@media (max-width: 768px) {
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas para móviles */
+    gap: 10px;
+    width: 90vw;
+    margin: 0 auto;
+  }
+
+  .memory-card {
+    aspect-ratio: 1 / 1; /* cuadrado */
+    width: 100%;
+    font-size: 1.5rem;
+  }
+
+  .memory-header,
+  .memory-stats {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .memory-button {
+    width: 80%;
+    margin: 1rem auto;
+    display: block;
+  }
+}
 }
 
