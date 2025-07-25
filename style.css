@@ -1373,28 +1373,30 @@ input, button, .numero, .puzzle-piece {
 
 @media (max-width: 768px) {
   .carta-papel {
-    font-size: 1rem;
-    padding: 20px 15px;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    padding: 20px 12px;
+    line-height: 1.6;
+    word-break: break-word;
   }
 
-  .axioma-principal {
+   .axioma-principal {
     font-size: 1rem;
     padding: 8px;
+    margin: 1rem 0;
   }
 
   .membrete {
     flex-direction: column;
     align-items: flex-start;
-    font-size: 0.95rem;
-    gap: 10px;
+    font-size: 0.9rem;
+    gap: 8px;
   }
 
-  .sello-oficial {
-    width: 80px;
-    height: 80px;
-    font-size: 0.8rem;
-    bottom: 30px;
-    right: 20px;
+    .sello-oficial {
+    width: 70px;
+    height: 70px;
+    font-size: 0.75rem;
+    bottom: 25px;
+    right: 15px;
   }
 }
