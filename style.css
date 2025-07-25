@@ -1409,17 +1409,21 @@ input, button, .numero, .puzzle-piece {
 .discord-button {
     display: inline-block;
     background-color: transparent;
-    color: #c00;
-    border: 2px solid #c00;
+    color: var(--neon-red);
+    border: 2px solid var(--neon-red);
     padding: 10px 30px;
-    font-family: 'Courier New', monospace;
-    font-size: 1.2rem;
+    font-family: var(--font-secondary);
+    font-size: 1.4rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: 0 0 10px #c00;
+    box-shadow: 0 0 10px var(--neon-red);
+    position: relative;
+    line-height: 1.4;
+    vertical-align: middle;
 }
+
 
 .discord-button:hover {
     background-color: #c00;
