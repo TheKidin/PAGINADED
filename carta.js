@@ -1,13 +1,10 @@
 // CARTA-DEFINITIVA-SIN-BOTON.js
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. Limpieza inicial para evitar duplicados
     document.body.innerHTML = '';
-    
-    // 2. Configuración inicial
+
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('nombre') || 'Invitado Desconocido';
-    
-    // 3. Crear estructura HTML completa
+
     document.body.innerHTML = `
         <div class="carta-wrapper">
             <div class="carta-papel">
@@ -22,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
 
-    // 4. Contenido de la carta actualizado en párrafos
     const lineas = [
         `Estimado(a) <span class="neon-text">${nombre}</span>:`,
         `<strong>Felicitaciones.</strong>`,
@@ -38,23 +34,19 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>Directora de Operaciones</p>
             <p class="cruel-logo">C.R.U.E.L.</p>
         </div>`,
-         `<div class="discord-link">
-    <p>Solo los observadores sabrán a dónde ir...</p>
-    <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-icon-link">
-        <i class="fa-brands fa-discord"></i>
-    </a>
-</div>`
-
+        `<div class="discord-link">
+            <p>Solo los observadores sabrán a dónde ir...</p>
+            <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-icon-link">
+                <i class="fa-brands fa-discord"></i>
+            </a>
+        </div>`
     ];
 
-    // 5. Configuración de audio
     const typeSound = document.getElementById('type-sound');
     typeSound.volume = 0.5;
 
-    // 6. Variables de control
     let isWriting = false;
 
-    // 7. Función para reproducir sonido
     function playTypeSound() {
         try {
             typeSound.currentTime = 0;
@@ -67,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 8. Efecto de escritura para párrafos
     async function escribirCarta() {
         isWriting = true;
         const contenido = document.getElementById('contenido-carta');
@@ -75,17 +66,18 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.carta-papel').style.opacity = '1';
         playTypeSound();
         typeSound.loop = true;
-        
+
         for (const linea of lineas) {
-            const lineaElem = document.createElement('p');
+            const esDiscord = linea.includes('discord-icon-link');
+            const lineaElem = document.createElement(esDiscord ? 'div' : 'p');
             contenido.appendChild(lineaElem);
-            
+
             if (linea.trim() === '') {
                 lineaElem.innerHTML = '&nbsp;';
                 await new Promise(r => setTimeout(r, 300));
                 continue;
             }
-            
+
             let i = 0;
             while (i < linea.length) {
                 if (linea[i] === '<') {
@@ -97,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     await new Promise(r => setTimeout(r, 25 + Math.random() * 40));
                 }
             }
+
             await new Promise(r => setTimeout(r, 400));
         }
 
@@ -104,13 +97,11 @@ document.addEventListener('DOMContentLoaded', function() {
         isWriting = false;
     }
 
-    // 9. Iniciar la animación al hacer clic
     document.querySelector('.instruccion-inicial').addEventListener('click', function() {
         this.remove();
         escribirCarta().catch(e => console.error('Error:', e));
     }, { once: true });
 
-    // 10. Estilos CSS integrados
     const style = document.createElement('style');
     style.textContent = `
         body {
@@ -206,6 +197,22 @@ document.addEventListener('DOMContentLoaded', function() {
             text-shadow: 0 0 5px #0f0;
             cursor: pointer;
             user-select: none;
+        }
+        .discord-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .discord-icon-link {
+            font-size: 2.5rem;
+            color: #c00;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+        }
+        .discord-icon-link:hover {
+            color: #ff0000;
+            transform: scale(1.2);
         }
     `;
     document.head.appendChild(style);
