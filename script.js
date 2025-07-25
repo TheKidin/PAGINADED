@@ -592,10 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const cols = 3;
             const pieceWidth = Math.floor(boardSize / cols);
             const pieceHeight = Math.floor(boardSize / rows);
-            puzzleBoard.style.width  = `${scaledWidth}px`;
-            puzzleBoard.style.height = `${scaledHeight}px`;
-
-            
+           
             // Ajustar tamaño del tablero
             puzzleBoard.style.display = 'grid';
             puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, ${pieceWidth}px)`;
@@ -631,10 +628,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Dibujar la porción de imagen escalada
                     ctx.drawImage(
                         img,
-                        col * (img.width / cols), 
-                        row * (img.height / rows), 
-                        img.width / cols, 
-                        img.height / rows,
+                        col * (img.naturalWidth / cols), 
+                        row * (img.naturalHeight / rows), 
+                        img.naturalWidth / cols, 
+                        img.naturalHeight / rows,
                         0, 
                         0, 
                         pieceWidth, 
