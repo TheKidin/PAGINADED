@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>`,
          `<div class="discord-link">
     <p>Solo los observadores sabrán a dónde ir...</p>
-    <a href="https://discord.gg/dedsafioo" target="_blank">
-        <i class="fa-brands fa-discord"></i>
+    Dale clic al boton rojo si te atrevez
+    <a href="https://discord.gg/dedsafioo" class="discord-button" target="_blank">
     </a>
 </div>`
 
