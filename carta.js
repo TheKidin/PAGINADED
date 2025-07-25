@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="cruel-logo">C.R.U.E.L.</p>
         </div>`,
          `<div class="discord-link">
-         <a href="http://discord.gg/dedsafioo" target="_blank" onclick="console.log('clic en el icono');">
+         <a href="http://discord.gg/dedsafioo" target="_blank">Ir al Discord</a>
         <img src="img/icodisc.png" alt="Discord" class="discord-icon">
         </a>
         </div>`
