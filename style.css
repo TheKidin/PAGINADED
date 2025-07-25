@@ -476,8 +476,9 @@ button {
 
 .puzzle-section {
     display: flex;
-    flex-direction: row;
-    gap: 40px;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
 }
 
  .puzzle-board-container {
