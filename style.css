@@ -505,11 +505,11 @@ button {
 }
   .puzzle-board {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(3, 130px);
+    grid-template-rows: repeat(3, 130px);
     gap: 5px;
-    width: 310px;
-    height: 310px;
+    width: 400px;
+    height: 400px;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
