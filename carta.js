@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `<div class="discord-link">
             <p class="mensaje-desafio">¿Te atreves a entrar a la siguiente prueba?</p>
             <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-button">
-                <i class="fa-brands fa-discord"></i> ENTRAR AHORA
+             ENTRAR AHORA
             </a>
         </div>`
     ];
