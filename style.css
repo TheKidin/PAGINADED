@@ -31,7 +31,7 @@ body {
 }
 
 body::after {
-    content: "";
+    content: """";
     position: fixed;
     top: 0;
     left: 0;
@@ -316,7 +316,7 @@ button {
 }
 
 .memoria-header::after {
-    content: "";
+    content: """";
     display: block;
     width: 80%;
     height: 3px;
@@ -370,14 +370,12 @@ button {
         inset 0 0 10px rgba(0, 255, 0, 0.2);
     transform: rotateY(0deg);
 }
-
-.frontal::before {
+.frontal ::before{
     content: "?";
     color: var(--text-soft);
     font-size: 2.5rem;
     text-shadow: 0 0 10px var(--text-color);
 }
-
 .trasera {
     background: linear-gradient(135deg, #1a1a1a, #222);
     border: 2px solid var(--accent-color);
@@ -513,11 +511,10 @@ button {
 }
   .puzzle-board {
     display: grid;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows: repeat(3, 150px);
-    gap: 5px;
-    width: 468px;
-    height: 468px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 450px;
+    height: 450px;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
@@ -527,17 +524,15 @@ button {
 
 .puzzle-pieces {
     display: grid;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows: repeat(3, 150px);
-    width: 468px;
-    height: 468px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 450px;
+    height: 450px;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
     box-sizing: border-box;
 }
-
-
 
 .puzzle-piece {
   width: 100px;
@@ -988,14 +983,16 @@ button {
 
     .puzzle-pieces,
     .puzzle-board {
-        max-width: 90vw !important;
-        width: 90vw !important;
-        min-width: 0 !important;
-        height: auto !important;
-        gap: 6px;
-        justify-content: center;
-        flex-shrink: 0;
-    }
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 450px;
+    height: 450px;
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 4px;
+    box-sizing: border-box;
+}
 
     .puzzle-title {
         font-size: 1rem;
@@ -1237,10 +1234,10 @@ input, button, .numero, .puzzle-piece {
 
 .puzzle-zone {
     display: flex;
-    gap: 40px;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    flex-wrap: wrap;
+    width: 100%;
+    gap: 20px;
 }
 
 .puzzle-section {
@@ -1265,9 +1262,16 @@ input, button, .numero, .puzzle-piece {
 
     .puzzle-pieces,
     .puzzle-board {
-        width: 95vw !important;   /* se adaptan al ancho */
-        height: auto;
-    }
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 450px;
+    height: 450px;
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 4px;
+    box-sizing: border-box;
+}
 
     .puzzle-slot,
     .puzzle-piece {
