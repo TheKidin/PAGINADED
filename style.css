@@ -1421,3 +1421,11 @@ input, button, .numero, .puzzle-piece {
     transform: scale(1.2);
 }
 
+.mensaje-desafio {
+    font-size: 1.2rem;
+    font-family: var(--font-secondary, 'Courier New', monospace);
+    color: var(--neon-red);
+    margin-bottom: 12px;
+    text-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red);
+    text-align: center;
+}
