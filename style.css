@@ -1270,13 +1270,14 @@ input, button, .numero, .puzzle-piece {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
-    width: 450px;
-    height: 450px;
+    width: 90vw;
+    height: auto;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
     box-sizing: border-box;
 }
+
 
     .puzzle-slot,
     .puzzle-piece {
