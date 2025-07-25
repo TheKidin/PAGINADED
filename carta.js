@@ -1,4 +1,4 @@
-i// CARTA-DEFINITIVA-SIN-BOTON.js
+// CARTA-DEFINITIVA-SIN-BOTON.js
 document.addEventListener('DOMContentLoaded', function() {
     document.body.innerHTML = '';
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
 
     const lineas = [
-        `Estimado(a) <span class="neon-text">${nombre}</span>:`,
+        `Estimado(a) <span class="neon-text">\${nombre}</span>:`,
         `<strong>Felicitaciones.</strong>`,
         `Has logrado resolver el acertijo, y eso dice mucho de ti. Tu mente es rápida, adaptable... útil.`,
         `Ahora formas parte de algo más grande. A partir de este momento, tu vida cambiará. Lo que conocías ya no importa. Solo queda avanzar, cumplir, sobrevivir.`,
@@ -35,12 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="cruel-logo">C.R.U.E.L.</p>
         </div>`,
         `<div class="discord-link">
-        <p>Solo los observadores sabran a donde ir...</p>
-        <a href="http://discord.gg/dedsafioo" target="_blank" class="discord-icon-link" aria-label="Acceso Discord"
-            <i class="fa-brands fa-discord></i>"
-        </a>
-    </div>`
-            
+            <p>Solo los observadores sabrán a dónde ir...</p>
+            <a href="https://discord.gg/dedsafioo" target="_blank" class="discord-icon-link" aria-label="Acceso Discord">
+                <i class="fa-brands fa-discord"></i>
+            </a>
+        </div>`
     ];
 
     const typeSound = document.getElementById('type-sound');
@@ -203,30 +202,27 @@ document.addEventListener('DOMContentLoaded', function() {
             text-align: center;
             margin-top: 30px;
         }
-
         .discord-icon-link {
-    font-size: 2.8rem;
-    color: #c00;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    box-shadow: 0 0 10px #c00;
-    background-color: rgba(255, 0, 0, 0.05);
-}
-
-.discord-icon-link:hover {
-    color: #fff;
-    background-color: #c00;
-    transform: scale(1.2);
-    box-shadow: 0 0 15px #f00, 0 0 30px #f00;
-}
-
+            font-size: 2.8rem;
+            color: #c00;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 0 10px #c00;
+            background-color: rgba(255, 0, 0, 0.05);
+        }
+        .discord-icon-link:hover {
+            color: #fff;
+            background-color: #c00;
+            transform: scale(1.2);
+            box-shadow: 0 0 15px #f00, 0 0 30px #f00;
+        }
     `;
     document.head.appendChild(style);
 });
