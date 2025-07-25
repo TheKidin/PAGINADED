@@ -505,11 +505,11 @@ button {
 }
   .puzzle-board {
     display: grid;
-    grid-template-columns: repeat(3, 130px);
-    grid-template-rows: repeat(3, 130px);
+    grid-template-columns: repeat(3, 150px);
+    grid-template-rows: repeat(3, 150px);
     gap: 5px;
-    width: 400px;
-    height: 400px;
+    width: 468px;
+    height: 468px;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
@@ -522,8 +522,8 @@ button {
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(3, 100px);
     gap: 5px;
-    width: 310px;
-    height: 310px;
+    width: 468px;
+    height: 468px;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
@@ -1218,7 +1218,7 @@ input, button, .numero, .puzzle-piece {
 
 .puzzle-zone {
     display: flex;
-    gap: 30px;
+    gap: 40px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
