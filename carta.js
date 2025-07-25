@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>`,
          `<div class="discord-link">
          <a href="http://discord.gg/dedsafioo" target="_blank">
-        <img src="img/icodisc.png" alt="Discord" class="discord-icon"></a>
         </div>`
     ];
 
