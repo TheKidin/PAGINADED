@@ -302,11 +302,13 @@ button {
     perspective: 1000px;
     margin: 30px auto;
     max-width: 600px;
+    max-height: 90vh;
     padding: 20px;
     background: rgba(0, 20, 0, 0.1);
     border-radius: 10px;
     border: 1px solid var(--accent-color);
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+    overflow-y: auto;
 }
 
 .memoria-header {
@@ -326,7 +328,7 @@ button {
 
 .memoria-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     max-width: 600px;
     margin: 0 auto;
@@ -335,7 +337,7 @@ button {
 .carta-memoria {
     height: 150px;
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 1 / 1;
     perspective: 1000px;
     cursor: pointer;
     position: relative;
@@ -389,6 +391,14 @@ button {
     font-size: 2.2rem;
     text-shadow: 0 0 5px currentColor;
 }
+
+/* NUEVO: Mejora escalado de imágenes en memorama */
+.trasera img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
 
 .carta-memoria.flip {
     transform: rotateY(180deg) scale(1.05);
@@ -1088,9 +1098,6 @@ button {
         height: auto;
         aspect-ratio: 1;
     }
-
-
-
     
     .frontal::before {
         font-size: 1.5rem;
@@ -1302,7 +1309,49 @@ input, button, .numero, .puzzle-piece {
         position: fixed !important;
     }
 }
-
-
 }
+@media (max-width: 768px) {
+  .memory-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    max-width: 90vw;
+    margin: 0 auto;
+  }
+
+  .memory-card {
+    aspect-ratio: 1 / 1;
+    font-size: 1.8rem;
+  }
+
+  .memory-header h2,
+  .memory-header p,
+  .memory-stats {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .memory-button {
+    width: 80%;
+    margin: 1rem auto;
+  }
+}
+
+/* NUEVO: Estilo para el botón de memorama */
+.memory-button {
+  padding: 10px 20px;
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  font-family: var(--font-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.memory-button:hover {
+  background: var(--accent-color);
+  color: #000;
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
 
