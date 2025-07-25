@@ -1407,18 +1407,19 @@ input, button, .numero, .puzzle-piece {
 }
 
 .discord-link a {
-    color: #c00;
-    font-weight: bold;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+    display: inline-block;
 }
 
 .discord-icon {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     vertical-align: middle;
+    cursor: pointer;
     filter: drop-shadow(0 0 4px #f00) drop-shadow(0 0 8px #c00);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+.discord-icon:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 6px #ff0000) drop-shadow(0 0 12px #ff0000);
 }
 
