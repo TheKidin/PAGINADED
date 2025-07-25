@@ -39,8 +39,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="cruel-logo">C.R.U.E.L.</p>
         </div>`,
          `<div class="discord-link">
-         <a href="http://discord.gg/dedsafioo" target="_blank">
-        </div>`
+        <p>Solo los observadores sabrán a dónde ir...</p>
+        <a href="https://discord.gg/dedsafioo" target="_blank" class="cruel-logo">C.R.U.E.L.</a>
+    </div>`
     ];
 
     // 5. Configuración de audio
