@@ -1192,3 +1192,47 @@ input, button, .numero, .puzzle-piece {
 @media (max-width: 767px) {
   .puzzle-container { flex-direction: column; }
 }
+
+
+.puzzle-frame {
+    border: 2px solid var(--accent-color);
+    padding: 20px;
+    margin: 20px auto;
+    background: rgba(0, 255, 0, 0.03);
+    box-shadow: 0 0 20px rgba(0,255,0,0.3);
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.puzzle-title-bar {
+    font-size: 1.2rem;
+    color: var(--text-soft);
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px dashed var(--accent-color);
+    width: 100%;
+}
+
+.puzzle-zone {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.puzzle-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.puzzle-subtitle {
+    color: var(--accent-color);
+    font-size: 1rem;
+    margin-bottom: 5px;
+}

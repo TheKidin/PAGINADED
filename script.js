@@ -265,27 +265,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 const imagenAleatoria = imagenesRompecabezas[Math.floor(Math.random() * imagenesRompecabezas.length)];
                 
                 contenedorJuego.innerHTML = `
-                <div class="puzzle-header">
-                    <h2>ROMPECABEZAS RETRO</h2>
-                    <p class="subtitle">Arrastra las piezas a su posición correcta</p>
-                </div>
-                <div class="puzzle-area">
-                    <div class="puzzle-container">
-                        <div class="puzzle-pieces-container">
-                            <div class="puzzle-title">PIEZAS</div>
-                            <div class="puzzle-pieces"></div>
-                        </div>
-                        <div class="puzzle-board-container">
-                            <div class="puzzle-title">TABLERO</div>
-                            <div class="puzzle-board"></div>
-                        </div>
-                    </div>
-                    <div class="puzzle-controls">
-                        <button id="btn-reiniciar-puzzle" class="btn-retro">REINICIAR</button>
-                        <div class="puzzle-counter">Piezas colocadas: <span id="piezas-colocadas">0/9</span></div>
-                    </div>
-                </div>`;
-                
+                <div class="puzzle-frame">
+                <div class="puzzle-title-bar">Arrastra las piezas a su posición correcta</div>
+                <div class="puzzle-zone">
+                <div class="puzzle-section">
+                <div class="puzzle-subtitle">PIEZAS</div>
+                <div class="puzzle-pieces"></div>
+            </div>
+            <div class="puzzle-section">
+                <div class="puzzle-subtitle">TABLERO</div>
+                <div class="puzzle-board"></div>
+            </div>
+        </div>
+        <div class="puzzle-controls">
+            <button id="btn-reiniciar-puzzle" class="btn-retro">REINICIAR</button>
+            <div class="puzzle-counter">Piezas colocadas: <span id="piezas-colocadas">0/9</span></div>
+        </div>
+    </div>
+`;
                 cargarYDividirImagen(imagenAleatoria);
                 break;
                 
