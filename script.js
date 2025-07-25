@@ -723,26 +723,31 @@ document.addEventListener('DOMContentLoaded', () => {
         pieces.forEach(piece => {
             // Eventos táctiles mejorados
             piece.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                const touch = e.touches[0];
-                activePiece = this;
-                
-                // Guardar posición inicial
-                touchStartX = touch.clientX;
-                touchStartY = touch.clientY;
-                const rect = this.getBoundingClientRect();
-                pieceStartX = rect.left;
-                pieceStartY = rect.top;
-                
-                // Estilo para el arrastre
-                this.style.position = '';
-                this.style.zIndex = '1000';
-                this.style.left = '';
-                this.style.top = '';
-                this.style.transition = 'none';
-                this.style.transform = 'scale(1.1)';
-            });
+            // ⛔️ Si ya está colocada, no hacer nada
+            if (this.classList.contains("placed")) {
+            e.preventDefault();
+            return;
+            }
 
+            e.preventDefault();
+            const touch = e.touches[0];
+            activePiece = this;
+
+            // Guardar posición inicial
+            const rect = this.getBoundingClientRect();
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            pieceStartX = rect.left;
+            pieceStartY = rect.top;
+
+            // Estilo para el arrastre
+            this.style.position = '';
+            this.style.zIndex = '1000';
+            this.style.left = '';
+            this.style.top = '';
+            this.style.transition = 'none';
+            this.style.transform = 'scale(1.1)';
+            });
             piece.addEventListener('touchmove', function(e) {
                 if (activePiece === this) {
                     e.preventDefault();
