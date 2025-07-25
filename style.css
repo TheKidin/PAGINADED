@@ -1407,28 +1407,28 @@ input, button, .numero, .puzzle-piece {
 }
 
 .discord-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; /* espacio entre ícono y texto */
     background-color: transparent;
     color: var(--neon-red);
     border: 2px solid var(--neon-red);
-    padding: 10px 30px;
+    padding: 10px 25px;
     font-family: var(--font-secondary);
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
     text-decoration: none;
-    transition: all 0.3s ease;
+    letter-spacing: 2px;
     box-shadow: 0 0 10px var(--neon-red);
-    position: relative;
-    line-height: 1.4;
-    vertical-align: middle;
+    transition: all 0.3s ease;
 }
 
 
 .discord-button:hover {
-    background-color: #c00;
+    background-color: var(--neon-red);
     color: #000;
-    box-shadow: 0 0 20px #f00;
+    box-shadow: 0 0 20px var(--neon-red);
+    transform: scale(1.05);
 }
 
 .discord-secret-link {
@@ -1456,6 +1456,10 @@ input, button, .numero, .puzzle-piece {
     content: none !important;
     display: none !important;
 }
-
+.discord-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+}
 
 
