@@ -31,7 +31,7 @@ body {
 }
 
 body::after {
-    content: "";
+    content: """";
     position: fixed;
     top: 0;
     left: 0;
@@ -316,7 +316,7 @@ button {
 }
 
 .memoria-header::after {
-    content: "";
+    content: """";
     display: block;
     width: 80%;
     height: 3px;
@@ -508,16 +508,15 @@ button {
 .puzzle-title {
     text-align: center;
     margin-bottom: 10px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--accent-color);
 }
   .puzzle-board {
     display: grid;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows: repeat(3, 150px);
-    gap: 5px;
-    width: 468px;
-    height: 468px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 450px;
+    height: 450px;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
@@ -527,17 +526,15 @@ button {
 
 .puzzle-pieces {
     display: grid;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows: repeat(3, 150px);
-    width: 468px;
-    height: 468px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 450px;
+    height: 450px;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
     box-sizing: border-box;
 }
-
-
 
 .puzzle-piece {
   width: 100px;
@@ -972,16 +969,12 @@ button {
         padding: 6px !important;
         max-width: 100vw !important;
         width: 100vw !important;
-        box-sizing: border-box;
     }
 
-
     .game-section,
-    .puzzle-container,
-    .puzzle-area {
+    .puzzle-container {
         flex-direction: column !important;
         align-items: center !important;
-        width: 100% !important;
     }
 
     .puzzle-area {
@@ -992,14 +985,16 @@ button {
 
     .puzzle-pieces,
     .puzzle-board {
-        max-width: 90vw !important;
-        width: 90vw !important;
-        min-width: 0 !important;
-        height: auto !important;
-        gap: 6px;
-        justify-content: center;
-        flex-shrink: 0;
-    }
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 450px;
+    height: 450px;
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 4px;
+    box-sizing: border-box;
+}
 
     .puzzle-title {
         font-size: 1rem;
@@ -1205,6 +1200,18 @@ input, button, .numero, .puzzle-piece {
     transform: scale(0.95);
     opacity: 0.8;
 }
+
+@media (max-width: 768px) {
+    .puzzle-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+@media (max-width: 767px) {
+  .puzzle-container { flex-direction: column; }
+}
+
+
 .puzzle-frame {
     border: 2px solid var(--accent-color);
     padding: 20px;
@@ -1228,11 +1235,12 @@ input, button, .numero, .puzzle-piece {
 }
 
 .puzzle-zone {
-        flex-direction: column !important;
-        align-items: center;
-        width: 100%;
-        gap: 20px;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
 
 .puzzle-section {
     display: flex;
@@ -1246,24 +1254,30 @@ input, button, .numero, .puzzle-piece {
     font-size: 1rem;
     margin-bottom: 5px;
 }
-    .puzzle-pieces,
-    .puzzle-board {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-        width: 90vw !important;
-        height: auto;
-        aspect-ratio: 1;
-        justify-content: center;
+
+
+@media (max-width: 768px) {
+    .puzzle-layout {
+        flex-direction: column;  /* se apilan */
         align-items: center;
-        box-sizing: border-box;
     }
 
-   .puzzle-slot,
+    .puzzle-pieces,
+    .puzzle-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 450px;
+    height: 450px;
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+    .puzzle-slot,
     .puzzle-piece {
-        width: 100%;
-        aspect-ratio: 1;
-        max-width: 100%;
-        height: auto;
-        box-sizing: border-box;
+        width: 30vw !important;  /* quepan bien 3x3 */
+        height: 30vw !important;
     }
+}
