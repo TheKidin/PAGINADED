@@ -1419,5 +1419,6 @@ input, button, .numero, .puzzle-piece {
     width: 32px;
     height: 32px;
     vertical-align: middle;
+    filter: drop-shadow(0 0 4px #f00) drop-shadow(0 0 8px #c00);
 }
 
