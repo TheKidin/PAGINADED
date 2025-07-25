@@ -39,12 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
             <p class="cruel-logo">C.R.U.E.L.</p>
         </div>`,
          `<div class="discord-link">
-        <p>Únete a nuestro grupo de discusión:</p>
         <a href="https://discord.gg/LOQUESEA" target="_blank">
-            <img src="https://cdn.jsdelivr.net/gh/encharm/Font-Awesome-SVG-PNG@master/black/png/64/discord.png" alt="Discord" class="discord-icon">
-            discord.gg/LOQUESEA
-        </a>
-    </div>`
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord" class="discord-icon">
+        discord.gg/LOQUESEA
+    </a>
+</div>`
     ];
 
     // 5. Configuración de audio
