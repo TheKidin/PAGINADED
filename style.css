@@ -967,8 +967,6 @@ button {
 }
 
 /* ==================== RESPONSIVE ==================== */
-
-
     .game-section,
     .puzzle-container {
         flex-direction: column !important;
@@ -980,20 +978,6 @@ button {
         align-items: center !important;
         width: 100%;
     }
-
-    .puzzle-pieces,
-    .puzzle-board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    width: 450px;
-    height: 450px;
-    border: 2px solid var(--accent-color);
-    border-radius: 12px;
-    padding: 4px;
-    box-sizing: border-box;
-}
-
     .puzzle-title {
         font-size: 1rem;
         text-align: center;
@@ -1233,59 +1217,57 @@ input, button, .numero, .puzzle-piece {
     font-size: 1rem;
     margin-bottom: 5px;
 }
+    @media (max-width: 768px) {
+  .puzzle-container,
+  .puzzle-layout,
+  .puzzle-zone,
+  .puzzle-section {
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 20px;
+  }
 
-
-
-
-    .puzzle-pieces,
-    .puzzle-board {
-    display: grid;
+  .puzzle-board,
+  .puzzle-pieces {
+    width: 90vw !important;
+    max-width: 90vw;
+    height: auto !important;
     grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    width: 450px;
-    height: 450px;
-    border: 2px solid var(--accent-color);
-    border-radius: 12px;
+    grid-template-rows: repeat(3, 1fr);
+    aspect-ratio: 1 / 1;
     padding: 4px;
+    border: 2px solid var(--accent-color);
     box-sizing: border-box;
-}
+  }
 
     .puzzle-slot,
     .puzzle-piece {
-        width: 30vw !important;  /* quepan bien 3x3 */
-        height: 30vw !important;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        box-sizing: border-box;
     }
 
+  .puzzle-frame,
+  .puzzle-board-container,
+  .puzzle-pieces-container {
+    width: 100%;
+    max-width: 100vw;
+    padding: 10px;
+    box-sizing: border-box;
+  }
 
-@media (max-width: 768px){
-    .screen{
-        padding: 6px !important;
-        max-width: 100vw !important ;
-        width: 100vw !important;
-    .puzzle-container {
-        flex-direction: column;
-        align-items: center;
-    .puzzle-layout{
-        flex-direction: column;
-        align-items: center;
-    }
-@media (max-width: 600px){
-    .memoria-grid{
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
-    }
-@media(max-width: 480px){
-    .memoria-grid{
-        grid-template-columns: repeat(4, 1fr);
-        gap: 6px;
-    }
-@media (max-width: 767px){
-    .puzzle-container {
-        flex-direction: column;
-    }
-}
-}
-}
-    }
-    }
+  .puzzle-title {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .puzzle-controls {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    margin-top: 12px;
+  }
 }
