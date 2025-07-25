@@ -496,6 +496,14 @@ button {
     justify-content: center;
     flex-direction: column;
 }
+.puzzle-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    margin-top: 30px;
+    flex-wrap: wrap; /* Para que en pantallas pequeñas se apilen */
+}
 
 .puzzle-title {
     text-align: center;
@@ -986,6 +994,7 @@ button {
         height: auto !important;
         gap: 6px;
         justify-content: center;
+        flex-shrink: 0;
     }
 
     .puzzle-title {
@@ -1025,6 +1034,16 @@ button {
         margin-top: 12px;
         align-self: center;
     }
+
+    .container button {
+    margin-top: 20px;
+}
+
+#puzzleStatus {
+    display: inline-block;
+    margin-left: 15px;
+}
+
     
     .opciones-trivia {
         grid-template-columns: 1fr;
