@@ -1451,4 +1451,11 @@ input, button, .numero, .puzzle-piece {
     text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
 }
 
+.discord-button::before,
+.discord-button::after {
+    content: none !important;
+    display: none !important;
+}
+
+
 
