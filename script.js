@@ -710,34 +710,39 @@ document.addEventListener('DOMContentLoaded', () => {
     let pieceStartX, pieceStartY;
     let pieceStartParent = null;
 
-    // Configurar eventos para móviles
-    pieces.forEach(piece => {
-        // Guardar posición inicial
-        const rect = piece.getBoundingClientRect();
-        piece.dataset.originalX = rect.left;
-        piece.dataset.originalY = rect.top;
-        
-        // Eventos táctiles mejorados
-        piece.addEventListener('touchstart', function(e) {
-            if (this.classList.contains("placed")) {
-                e.preventDefault();
-                return;
-            }
-
+    // Función para manejar el inicio del arrastre
+    function handleDragStart(e) {
+        if (this.classList.contains("placed")) {
             e.preventDefault();
+            return;
+        }
+        
+        audioClick.currentTime = 0;
+        audioClick.play();
+        activePiece = this;
+        
+        // Guardar posición y padre original
+        const rect = this.getBoundingClientRect();
+        pieceStartX = rect.left;
+        pieceStartY = rect.top;
+        pieceStartParent = this.parentNode;
+        
+        // Estilo para el arrastre
+        this.classList.add('dragging');
+        
+        // Para desktop: establecer datos de transferencia
+        if (e.dataTransfer) {
+            e.dataTransfer.setData('text/plain', this.dataset.pos);
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        // Para móvil: guardar posición inicial del toque
+        if (e.touches) {
             const touch = e.touches[0];
-            activePiece = this;
-            
-            // Guardar posición inicial
-            const rect = this.getBoundingClientRect();
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
-            pieceStartX = rect.left;
-            pieceStartY = rect.top;
-            pieceStartParent = this.parentNode;
             
-            // Estilo para el arrastre
-            this.classList.add('dragging');
+            // Posicionar absolutamente para seguir el dedo
             this.style.position = 'fixed';
             this.style.left = `${rect.left}px`;
             this.style.top = `${rect.top}px`;
@@ -745,135 +750,67 @@ document.addEventListener('DOMContentLoaded', () => {
             this.style.height = `${rect.height}px`;
             this.style.margin = '0';
             this.style.transition = 'none';
-        });
+        }
+    }
+
+    // Función para manejar el movimiento durante el arrastre
+    function handleDragMove(e) {
+        if (!activePiece) return;
         
-        piece.addEventListener('touchmove', function(e) {
-            if (activePiece === this) {
-                e.preventDefault();
-                const touch = e.touches[0];
-                const deltaX = touch.clientX - touchStartX;
-                const deltaY = touch.clientY - touchStartY;
-                
-                this.style.left = `${pieceStartX + deltaX}px`;
-                this.style.top = `${pieceStartY + deltaY}px`;
-            }
-        });
-
-        piece.addEventListener('touchend', function(e) {
-            if (activePiece === this) {
-                e.preventDefault();
-                this.classList.remove('dragging');
-                
-                const touch = e.changedTouches[0];
-                const elementoDestino = document.elementFromPoint(touch.clientX, touch.clientY);
-                
-                // Verificar si se soltó sobre un slot
-                if (elementoDestino && elementoDestino.classList.contains('puzzle-slot')) {
-                    const slot = elementoDestino;
-                    
-                    // Verificar si es el slot correcto
-                    if (this.dataset.pos === slot.dataset.pos) {
-                        // Si ya hay una pieza en este slot, la devolvemos al contenedor
-                        if (slot.firstChild) {
-                            puzzlePiecesContainer.appendChild(slot.firstChild);
-                            colocadas--;
-                        }
-                        
-                        // Colocamos la nueva pieza
-                        slot.appendChild(this);
-                        this.classList.add('placed');
-                        colocadas++;
-                        
-                        // Actualizar contador
-                        if (piezasColocadasElement) {
-                            piezasColocadasElement.textContent = `${colocadas}/${totalPiezas}`;
-                        }
-                        
-                        // Reproducir sonido de éxito
-                        audioSuccess.currentTime = 0;
-                        audioSuccess.play();
-                        
-                        // Verificar si se completó el puzzle
-                        if (colocadas === totalPiezas) {
-                            setTimeout(mostrarRecompensa, 1000);
-                        }
-                    } else {
-                        // Devolver a la posición original si no es el slot correcto
-                        this.style.position = 'absolute';
-                        this.style.left = '';
-                        this.style.top = '';
-                        this.style.width = '';
-                        this.style.height = '';
-                        pieceStartParent.appendChild(this);
-                        
-                        // Reproducir sonido de error
-                        audioError.currentTime = 0;
-                        audioError.play();
-                        
-                        // Efecto visual de error
-                        slot.classList.add('incorrect');
-                        setTimeout(() => slot.classList.remove('incorrect'), 500);
-                    }
-                } else {
-                    // Devolver a la posición original si no se soltó sobre un slot
-                    this.style.position = 'absolute';
-                    this.style.left = '';
-                    this.style.top = '';
-                    this.style.width = '';
-                    this.style.height = '';
-                    pieceStartParent.appendChild(this);
-                }
-                
-                activePiece = null;
-            }
-        });
-    });
-
-    // Configurar eventos para desktop (ratón)
-    pieces.forEach(piece => {
-        piece.addEventListener('dragstart', function(e) {
-            if (this.classList.contains("placed")) {
-                e.preventDefault();
-                return;
-            }
-            
-            audioClick.currentTime = 0;
-            audioClick.play();
-            e.dataTransfer.setData('text/plain', this.dataset.pos);
-            this.classList.add('dragging');
-        });
-
-        piece.addEventListener('dragend', function() {
-            this.classList.remove('dragging');
-        });
-    });
-
-    slots.forEach(slot => {
-        slot.addEventListener('dragover', function(e) {
+        // Para móvil
+        if (e.touches) {
             e.preventDefault();
-            this.classList.add('highlight');
-        });
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - touchStartX;
+            const deltaY = touch.clientY - touchStartY;
+            
+            activePiece.style.left = `${pieceStartX + deltaX}px`;
+            activePiece.style.top = `${pieceStartY + deltaY}px`;
+        }
+    }
 
-        slot.addEventListener('dragleave', function() {
-            this.classList.remove('highlight');
-        });
-
-        slot.addEventListener('drop', function(e) {
+    // Función para manejar el fin del arrastre
+    function handleDragEnd(e) {
+        if (!activePiece) return;
+        
+        // Para móvil: prevenir comportamiento por defecto
+        if (e.type === 'touchend') {
             e.preventDefault();
-            this.classList.remove('highlight');
-            
-            const piecePos = e.dataTransfer.getData('text/plain');
-            const draggedPiece = document.querySelector(`.puzzle-piece[data-pos="${piecePos}"]:not(.placed)`);
-            
-            if (!draggedPiece) return;
-            
-            if (piecePos === this.dataset.pos) {
-                audioSuccess.currentTime = 0;
-                audioSuccess.play();
-                
-                // Si ya hay una pieza en este slot, la removemos
-                if (this.firstChild) {
-                    const existingPiece = this.firstChild;
+        }
+        
+        activePiece.classList.remove('dragging');
+        
+        let clientX, clientY;
+        
+        // Obtener posición final
+        if (e.type === 'touchend') {
+            const touch = e.changedTouches[0];
+            clientX = touch.clientX;
+            clientY = touch.clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+        
+        // Restaurar estilos para móvil
+        if (e.type === 'touchend') {
+            activePiece.style.position = '';
+            activePiece.style.left = '';
+            activePiece.style.top = '';
+            activePiece.style.width = '';
+            activePiece.style.height = '';
+        }
+        
+        // Encontrar el slot de destino
+        const elementoDestino = document.elementFromPoint(clientX, clientY);
+        const slotDestino = elementoDestino?.closest('.puzzle-slot');
+        
+        if (slotDestino) {
+            // Verificar si es el slot correcto
+            if (activePiece.dataset.pos === slotDestino.dataset.pos) {
+                // Si ya hay una pieza en este slot, la devolvemos al contenedor
+                if (slotDestino.firstChild) {
+                    const existingPiece = slotDestino.firstChild;
                     existingPiece.classList.remove('placed');
                     existingPiece.draggable = true;
                     puzzlePiecesContainer.appendChild(existingPiece);
@@ -881,10 +818,95 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 // Colocamos la nueva pieza
+                slotDestino.appendChild(activePiece);
+                activePiece.classList.add('placed');
+                activePiece.draggable = false;
+                colocadas++;
+                
+                // Actualizar contador
+                if (piezasColocadasElement) {
+                    piezasColocadasElement.textContent = `${colocadas}/${totalPiezas}`;
+                }
+                
+                // Reproducir sonido de éxito
+                audioSuccess.currentTime = 0;
+                audioSuccess.play();
+                
+                // Verificar si se completó el puzzle
+                if (colocadas === totalPiezas) {
+                    setTimeout(mostrarRecompensa, 1000);
+                }
+            } else {
+                // Devolver a la posición original si no es el slot correcto
+                pieceStartParent.appendChild(activePiece);
+                
+                // Reproducir sonido de error
+                audioError.currentTime = 0;
+                audioError.play();
+                
+                // Efecto visual de error
+                slotDestino.classList.add('incorrect');
+                setTimeout(() => slotDestino.classList.remove('incorrect'), 500);
+            }
+        } else {
+            // Devolver a la posición original si no se soltó sobre un slot
+            pieceStartParent.appendChild(activePiece);
+        }
+        
+        activePiece = null;
+    }
+
+    // Configurar eventos para móviles
+    pieces.forEach(piece => {
+        piece.addEventListener('touchstart', handleDragStart);
+        piece.addEventListener('touchmove', handleDragMove);
+        piece.addEventListener('touchend', handleDragEnd);
+    });
+
+    // Configurar eventos para desktop (ratón)
+    pieces.forEach(piece => {
+        piece.draggable = true;
+        piece.addEventListener('dragstart', handleDragStart);
+        piece.addEventListener('dragend', handleDragEnd);
+    });
+
+    slots.forEach(slot => {
+        slot.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            slot.classList.add('highlight');
+        });
+
+        slot.addEventListener('dragleave', () => {
+            slot.classList.remove('highlight');
+        });
+
+        slot.addEventListener('drop', (e) => {
+            e.preventDefault();
+            slot.classList.remove('highlight');
+            
+            const piecePos = e.dataTransfer.getData('text/plain');
+            const draggedPiece = document.querySelector(`.puzzle-piece[data-pos="${piecePos}"]:not(.placed)`);
+            
+            if (!draggedPiece) return;
+            
+            if (piecePos === slot.dataset.pos) {
+                audioSuccess.currentTime = 0;
+                audioSuccess.play();
+                
+                // Si ya hay una pieza en este slot, la removemos
+                if (slot.firstChild) {
+                    const existingPiece = slot.firstChild;
+                    existingPiece.classList.remove('placed');
+                    existingPiece.draggable = true;
+                    puzzlePiecesContainer.appendChild(existingPiece);
+                    colocadas--;
+                }
+                
+                // Colocamos la nueva pieza
+                slot.appendChild(draggedPiece);
                 draggedPiece.classList.add('placed');
                 draggedPiece.draggable = false;
-                this.appendChild(draggedPiece);
-                
                 colocadas++;
                 
                 // Actualizar contador
@@ -898,9 +920,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 audioError.currentTime = 0;
                 audioError.play();
-                this.classList.add('incorrect');
+                slot.classList.add('incorrect');
                 setTimeout(() => {
-                    this.classList.remove('incorrect');
+                    slot.classList.remove('incorrect');
                 }, 500);
             }
         });

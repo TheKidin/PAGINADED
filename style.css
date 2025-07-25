@@ -548,6 +548,9 @@ button {
   align-items: center;
   cursor: grab;
   touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
 }
 
