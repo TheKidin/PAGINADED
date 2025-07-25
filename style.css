@@ -1371,3 +1371,30 @@ input, button, .numero, .puzzle-piece {
 }
 
 
+@media (max-width: 768px) {
+  .carta-papel {
+    font-size: 1rem;
+    padding: 20px 15px;
+    line-height: 1.5;
+  }
+
+  .axioma-principal {
+    font-size: 1rem;
+    padding: 8px;
+  }
+
+  .membrete {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    gap: 10px;
+  }
+
+  .sello-oficial {
+    width: 80px;
+    height: 80px;
+    font-size: 0.8rem;
+    bottom: 30px;
+    right: 20px;
+  }
+}
