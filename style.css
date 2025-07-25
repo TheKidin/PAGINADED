@@ -559,7 +559,7 @@ button {
     transform: scale(1.05);
     z-index: 10;
     box-shadow: 0 0 15px var(--accent-color);
-    pointer-events: none;
+    
 }
 
 
@@ -1296,5 +1296,11 @@ input, button, .numero, .puzzle-piece {
     align-items: center;
     margin-top: 12px;
   }
+  @media (hover: none) and (pointer: coarse) {
+    .puzzle-piece.dragging {
+        pointer-events: none;
+        position: fixed !important;
+    }
+}
 }
 
