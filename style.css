@@ -556,6 +556,8 @@ button {
     transform: scale(1.05);
     z-index: 10;
     box-shadow: 0 0 15px var(--accent-color);
+    position: fixed !important;
+    pointer-events: none;
 }
 
 .puzzle-slot {

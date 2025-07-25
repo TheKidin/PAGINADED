@@ -696,222 +696,243 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
     function setupPuzzle() {
-        const pieces = document.querySelectorAll('.puzzle-piece');
-        const slots = document.querySelectorAll('.puzzle-slot');
-        const puzzlePiecesContainer = document.querySelector('.puzzle-pieces');
-        const piezasColocadasElement = document.getElementById('piezas-colocadas');
-        
-        if (!pieces.length || !slots.length) return;
-        
-        const totalPiezas = pieces.length;
-        let colocadas = 0;
-        let activePiece = null;
-        let touchStartX, touchStartY;
-        let pieceStartX, pieceStartY;
+    const pieces = document.querySelectorAll('.puzzle-piece');
+    const slots = document.querySelectorAll('.puzzle-slot');
+    const puzzlePiecesContainer = document.querySelector('.puzzle-pieces');
+    const piezasColocadasElement = document.getElementById('piezas-colocadas');
+    
+    if (!pieces.length || !slots.length) return;
+    
+    const totalPiezas = pieces.length;
+    let colocadas = 0;
+    let activePiece = null;
+    let touchStartX, touchStartY;
+    let pieceStartX, pieceStartY;
+    let pieceStartParent = null;
 
-        // Configurar eventos para móviles
-        pieces.forEach(piece => {
-            // Eventos táctiles mejorados
-            piece.addEventListener('touchstart', function(e) {
-            // ⛔️ Si ya está colocada, no hacer nada
+    // Configurar eventos para móviles
+    pieces.forEach(piece => {
+        // Guardar posición inicial
+        const rect = piece.getBoundingClientRect();
+        piece.dataset.originalX = rect.left;
+        piece.dataset.originalY = rect.top;
+        
+        // Eventos táctiles mejorados
+        piece.addEventListener('touchstart', function(e) {
             if (this.classList.contains("placed")) {
-            e.preventDefault();
-            return;
+                e.preventDefault();
+                return;
             }
 
             e.preventDefault();
             const touch = e.touches[0];
             activePiece = this;
-
+            
             // Guardar posición inicial
             const rect = this.getBoundingClientRect();
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
             pieceStartX = rect.left;
             pieceStartY = rect.top;
-
+            pieceStartParent = this.parentNode;
+            
             // Estilo para el arrastre
-            this.style.position = '';
-            this.style.zIndex = '1000';
-            this.style.left = '';
-            this.style.top = '';
+            this.classList.add('dragging');
+            this.style.position = 'fixed';
+            this.style.left = `${rect.left}px`;
+            this.style.top = `${rect.top}px`;
+            this.style.width = `${rect.width}px`;
+            this.style.height = `${rect.height}px`;
+            this.style.margin = '0';
             this.style.transition = 'none';
-            this.style.transform = 'scale(1.1)';
-            });
-            piece.addEventListener('touchmove', function(e) {
-                if (activePiece === this) {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    this.style.left = `${touch.clientX - this.offsetWidth/2}px`;
-                    this.style.top = `${touch.clientY - this.offsetHeight/2}px`;
-                }
-            });
+        });
+        
+        piece.addEventListener('touchmove', function(e) {
+            if (activePiece === this) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const deltaX = touch.clientX - touchStartX;
+                const deltaY = touch.clientY - touchStartY;
+                
+                this.style.left = `${pieceStartX + deltaX}px`;
+                this.style.top = `${pieceStartY + deltaY}px`;
+            }
+        });
 
-            piece.addEventListener('touchend', function(e) {
-                if (activePiece === this) {
-                    e.preventDefault();
-                    const touch = e.changedTouches[0];
-                    const elementoDestino = document.elementFromPoint(touch.clientX, touch.clientY);
+        piece.addEventListener('touchend', function(e) {
+            if (activePiece === this) {
+                e.preventDefault();
+                this.classList.remove('dragging');
+                
+                const touch = e.changedTouches[0];
+                const elementoDestino = document.elementFromPoint(touch.clientX, touch.clientY);
+                
+                // Verificar si se soltó sobre un slot
+                if (elementoDestino && elementoDestino.classList.contains('puzzle-slot')) {
+                    const slot = elementoDestino;
                     
-                    // Restaurar estilos
-                    this.style.position = '';
-                    this.style.zIndex = '';
-                    this.style.transform = '';
-                    
-                    // Verificar si se soltó sobre un slot
-                    if (elementoDestino && elementoDestino.classList.contains('puzzle-slot')) {
-                        const slot = elementoDestino;
+                    // Verificar si es el slot correcto
+                    if (this.dataset.pos === slot.dataset.pos) {
+                        // Si ya hay una pieza en este slot, la devolvemos al contenedor
+                        if (slot.firstChild) {
+                            puzzlePiecesContainer.appendChild(slot.firstChild);
+                            colocadas--;
+                        }
                         
-                        // Verificar si es el slot correcto
-                        if (this.dataset.pos === slot.dataset.pos) {
-                            // Si ya hay una pieza en este slot, la devolvemos al contenedor
-                            if (slot.firstChild) {
-                                puzzlePiecesContainer.appendChild(slot.firstChild);
-                                colocadas--;
-                            }
-                            
-                            // Colocamos la nueva pieza
-                            slot.appendChild(this);
-                            colocadas++;
-                            
-                            // Actualizar contador
-                            if (piezasColocadasElement) {
-                                piezasColocadasElement.textContent = `${colocadas}/${totalPiezas}`;
-                            }
-                            
-                            // Reproducir sonido de éxito
-                            audioSuccess.currentTime = 0;
-                            audioSuccess.play();
-                            
-                            // Verificar si se completó el puzzle
-                            if (colocadas === totalPiezas) {
-                                setTimeout(mostrarRecompensa, 1000);
-                            }
-                        } else {
-                            // Devolver a la posición original si no es el slot correcto
-                            this.style.position = 'absolute';
-                            this.style.left = `${pieceStartX}px`;
-                            this.style.top = `${pieceStartY}px`;
-                            
-                            // Reproducir sonido de error
-                            audioError.currentTime = 0;
-                            audioError.play();
-                            
-                            // Efecto visual de error
-                            slot.classList.add('incorrect');
-                            setTimeout(() => slot.classList.remove('incorrect'), 500);
+                        // Colocamos la nueva pieza
+                        slot.appendChild(this);
+                        this.classList.add('placed');
+                        colocadas++;
+                        
+                        // Actualizar contador
+                        if (piezasColocadasElement) {
+                            piezasColocadasElement.textContent = `${colocadas}/${totalPiezas}`;
+                        }
+                        
+                        // Reproducir sonido de éxito
+                        audioSuccess.currentTime = 0;
+                        audioSuccess.play();
+                        
+                        // Verificar si se completó el puzzle
+                        if (colocadas === totalPiezas) {
+                            setTimeout(mostrarRecompensa, 1000);
                         }
                     } else {
-                        // Devolver a la posición original si no se soltó sobre un slot
+                        // Devolver a la posición original si no es el slot correcto
                         this.style.position = 'absolute';
-                        this.style.left = `${pieceStartX}px`;
-                        this.style.top = `${pieceStartY}px`;
-                    }
-                    
-                    activePiece = null;
-                }
-            });
-        });
-
-        // Configurar eventos para desktop (ratón)
-        pieces.forEach(piece => {
-            piece.addEventListener('dragstart', function(e) {
-                audioClick.currentTime = 0;
-                audioClick.play();
-                e.dataTransfer.setData('text/plain', this.dataset.pos);
-                this.classList.add('dragging');
-            });
-
-            piece.addEventListener('dragend', function() {
-                this.classList.remove('dragging');
-            });
-        });
-
-        slots.forEach(slot => {
-            slot.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                this.classList.add('highlight');
-            });
-
-            slot.addEventListener('dragleave', function() {
-                this.classList.remove('highlight');
-            });
-
-            slot.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.classList.remove('highlight');
-                
-                const piecePos = e.dataTransfer.getData('text/plain');
-                const draggedPiece = document.querySelector(`.puzzle-piece[data-pos="${piecePos}"]:not(.placed)`);
-                
-                if (!draggedPiece) return;
-                
-                if (piecePos === this.dataset.pos) {
-                    audioSuccess.currentTime = 0;
-                    audioSuccess.play();
-                    
-                    // Si ya hay una pieza en este slot, la removemos
-                    if (this.firstChild) {
-                        const existingPiece = this.firstChild;
-                        existingPiece.classList.remove('placed');
-                        existingPiece.draggable = true;
-                        puzzlePiecesContainer.appendChild(existingPiece);
-                        colocadas--;
-                    }
-                    
-                    // Colocamos la nueva pieza
-                    draggedPiece.classList.add('placed');
-                    draggedPiece.draggable = false;
-                    this.appendChild(draggedPiece);
-                    
-                    colocadas++;
-                    
-                    // Actualizar contador
-                    if (piezasColocadasElement) {
-                        piezasColocadasElement.textContent = `${colocadas}/${totalPiezas}`;
-                    }
-                    
-                    if (colocadas === totalPiezas) {
-                        setTimeout(mostrarRecompensa, 1000);
+                        this.style.left = '';
+                        this.style.top = '';
+                        this.style.width = '';
+                        this.style.height = '';
+                        pieceStartParent.appendChild(this);
+                        
+                        // Reproducir sonido de error
+                        audioError.currentTime = 0;
+                        audioError.play();
+                        
+                        // Efecto visual de error
+                        slot.classList.add('incorrect');
+                        setTimeout(() => slot.classList.remove('incorrect'), 500);
                     }
                 } else {
-                    audioError.currentTime = 0;
-                    audioError.play();
-                    this.classList.add('incorrect');
-                    setTimeout(() => {
-                        this.classList.remove('incorrect');
-                    }, 500);
+                    // Devolver a la posición original si no se soltó sobre un slot
+                    this.style.position = 'absolute';
+                    this.style.left = '';
+                    this.style.top = '';
+                    this.style.width = '';
+                    this.style.height = '';
+                    pieceStartParent.appendChild(this);
                 }
-            });
+                
+                activePiece = null;
+            }
         });
+    });
 
-        // Botón de reinicio
-        document.getElementById('btn-reiniciar-puzzle')?.addEventListener('click', () => {
-            audioClick.currentTime = 0;
-            audioClick.play();
-            
-            slots.forEach(slot => {
-                while (slot.firstChild) {
-                    const piece = slot.firstChild;
-                    piece.classList.remove('placed');
-                    piece.draggable = true;
-                    puzzlePiecesContainer.appendChild(piece);
-                }
-            });
-            
-            colocadas = 0;
-            
-            // Actualizar contador
-            if (piezasColocadasElement) {
-                piezasColocadasElement.textContent = `0/${totalPiezas}`;
+    // Configurar eventos para desktop (ratón)
+    pieces.forEach(piece => {
+        piece.addEventListener('dragstart', function(e) {
+            if (this.classList.contains("placed")) {
+                e.preventDefault();
+                return;
             }
             
-            // Mezclar las piezas
-            const piecesArray = Array.from(pieces);
-            piecesArray.sort(() => Math.random() - 0.5);
-            piecesArray.forEach(piece => puzzlePiecesContainer.appendChild(piece));
+            audioClick.currentTime = 0;
+            audioClick.play();
+            e.dataTransfer.setData('text/plain', this.dataset.pos);
+            this.classList.add('dragging');
         });
-    }
+
+        piece.addEventListener('dragend', function() {
+            this.classList.remove('dragging');
+        });
+    });
+
+    slots.forEach(slot => {
+        slot.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('highlight');
+        });
+
+        slot.addEventListener('dragleave', function() {
+            this.classList.remove('highlight');
+        });
+
+        slot.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('highlight');
+            
+            const piecePos = e.dataTransfer.getData('text/plain');
+            const draggedPiece = document.querySelector(`.puzzle-piece[data-pos="${piecePos}"]:not(.placed)`);
+            
+            if (!draggedPiece) return;
+            
+            if (piecePos === this.dataset.pos) {
+                audioSuccess.currentTime = 0;
+                audioSuccess.play();
+                
+                // Si ya hay una pieza en este slot, la removemos
+                if (this.firstChild) {
+                    const existingPiece = this.firstChild;
+                    existingPiece.classList.remove('placed');
+                    existingPiece.draggable = true;
+                    puzzlePiecesContainer.appendChild(existingPiece);
+                    colocadas--;
+                }
+                
+                // Colocamos la nueva pieza
+                draggedPiece.classList.add('placed');
+                draggedPiece.draggable = false;
+                this.appendChild(draggedPiece);
+                
+                colocadas++;
+                
+                // Actualizar contador
+                if (piezasColocadasElement) {
+                    piezasColocadasElement.textContent = `${colocadas}/${totalPiezas}`;
+                }
+                
+                if (colocadas === totalPiezas) {
+                    setTimeout(mostrarRecompensa, 1000);
+                }
+            } else {
+                audioError.currentTime = 0;
+                audioError.play();
+                this.classList.add('incorrect');
+                setTimeout(() => {
+                    this.classList.remove('incorrect');
+                }, 500);
+            }
+        });
+    });
+
+    // Botón de reinicio
+    document.getElementById('btn-reiniciar-puzzle')?.addEventListener('click', () => {
+        audioClick.currentTime = 0;
+        audioClick.play();
+        
+        slots.forEach(slot => {
+            while (slot.firstChild) {
+                const piece = slot.firstChild;
+                piece.classList.remove('placed');
+                piece.draggable = true;
+                puzzlePiecesContainer.appendChild(piece);
+            }
+        });
+        
+        colocadas = 0;
+        
+        // Actualizar contador
+        if (piezasColocadasElement) {
+            piezasColocadasElement.textContent = `0/${totalPiezas}`;
+        }
+        
+        // Mezclar las piezas
+        const piecesArray = Array.from(pieces);
+        piecesArray.sort(() => Math.random() - 0.5);
+        piecesArray.forEach(piece => puzzlePiecesContainer.appendChild(piece));
+    });
+}
     
     function setupMemoria() {
         const cartas = document.querySelectorAll('.carta-memoria');
