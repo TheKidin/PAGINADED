@@ -1400,70 +1400,24 @@ input, button, .numero, .puzzle-piece {
     right: 15px;
   }
 }
+
 .discord-link {
     margin-top: 50px;
     text-align: center;
     font-size: 1em;
 }
 
-.discord-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background-color: transparent;
-    color: var(--neon-red);
-    border: 2px solid var(--neon-red);
-    padding: 10px 25px;
-    font-family: var(--font-secondary);
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-decoration: none;
-    box-shadow: 0 0 10px var(--neon-red);
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-
-
-.discord-button:hover {
-    background-color: var(--neon-red);
-    color: #000;
-    box-shadow: 0 0 20px var(--neon-red);
-    transform: scale(1.05);
-}
-
-.discord-secret-link {
-    font-family: var(--font-secondary);
-    font-size: 2rem;
-    letter-spacing: 4px;
+.discord-icon-link {
+    font-size: 2.5rem;
     color: var(--neon-red);
     text-decoration: none;
     display: inline-block;
-    margin-top: 10px;
-    text-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red);
-    transition: transform 0.2s ease, text-shadow 0.3s ease;
+    transition: transform 0.2s ease, color 0.3s ease;
     cursor: pointer;
-    z-index: 1000;
-    position: relative;
 }
 
-.discord-secret-link:hover {
-    transform: scale(1.1);
-    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
-}
-
-.discord-button::before,
-.discord-button::after {
-    content: none !important;
-    display: none !important;
-}
-.discord-icon {
-    width: 24px;
-    height: 24px;
-    display: inline-block;
-}
-.discord-button i {
-    font-size: 1.5rem;
+.discord-icon-link:hover {
+    color: #ff0000;
+    transform: scale(1.2);
 }
 
