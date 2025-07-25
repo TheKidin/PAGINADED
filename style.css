@@ -1255,3 +1255,23 @@ input, button, .numero, .puzzle-piece {
     font-size: 1rem;
     margin-bottom: 5px;
 }
+
+
+@media (max-width: 768px) {
+    .puzzle-layout {
+        flex-direction: column;  /* se apilan */
+        align-items: center;
+    }
+
+    .puzzle-pieces,
+    .puzzle-board {
+        width: 95vw !important;   /* se adaptan al ancho */
+        height: auto;
+    }
+
+    .puzzle-slot,
+    .puzzle-piece {
+        width: 30vw !important;  /* quepan bien 3x3 */
+        height: 30vw !important;
+    }
+}
