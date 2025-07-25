@@ -535,15 +535,17 @@ button {
 }
 
 .puzzle-piece {
-  width: 100px;
-  height: 100px;
-  border: 1px dashed var(--accent-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: grab;
-  touch-action: none;
+    width: 100px;
+    height: 100px;
+    border: 1px dashed var(--accent-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+    touch-action: none;
+    overflow: hidden;
 }
+
 
 .puzzle-piece.dragging {
     transform: scale(1.05);
@@ -555,17 +557,6 @@ button {
     border: 1px dashed var(--text-color);
     background: rgba(0, 255, 0, 0.05);
     transition: all 0.3s;
-}
-
-.puzzle-piece, .puzzle-slot {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  box-sizing: border-box;
 }
 
 .puzzle-slot.highlight {
@@ -1263,14 +1254,15 @@ input, button, .numero, .puzzle-piece {
     .puzzle-pieces,
     .puzzle-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
     gap: 6px;
-    width: 450px;
-    height: 450px;
     border: 2px solid var(--accent-color);
     border-radius: 12px;
     padding: 4px;
     box-sizing: border-box;
+    width: fit-content;
+    margin: auto;
 }
 
     .puzzle-slot,
